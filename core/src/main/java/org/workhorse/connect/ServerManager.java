@@ -1,0 +1,56 @@
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.workhorse.connect;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * @author Brennan Spies
+ * <p></p>
+ */
+public class ServerManager 
+{
+	private Collection<Server> servers;
+	
+	public ServerManager() {
+		servers = new ArrayList<Server>();
+	}
+	
+	/**
+	 * Adds a server.
+	 * @param server The server to add
+	 */
+	public void addServer(Server server) {
+		servers.add(server);
+	}
+	
+	/**
+	 * Starts the servers.
+	 */
+	public void startServers() {
+		for(Server server : servers){
+			server.listen();
+		}
+	}
+	
+	/**
+	 * Stops the servers.
+	 */
+	public void stopServers() {
+		for(Server server : servers) {
+			server.shutdown();
+		}
+	}
+}

@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,47 +13,39 @@
  */
 package org.workhorse.process;
 
-import java.util.Collection;
-
+import org.workhorse.Cancellable;
 import org.workhorse.Recordable;
-import org.workhorse.Startable;
-import org.workhorse.exec.Execution;
-import org.workhorse.graph.node.Node;
-import org.workhorse.service.Service;
-
+import org.workhorse.util.Version;
 
 /**
- * Represents an instance of a process, or top-level executable.
+ * The top-level workflow process.
  *
  * @author Brennan Spies
  */
-public interface Process extends Container, Startable, Recordable
-{	
-    /**
-     * Retrieves the service instance for the given service type
-     * @param type The service type
-     * @return The service instance
-     */
-    public <S extends Service> S getService(Class<S> type);
-	
-	/**
-	 * Returns all executions belonging to this process instance.
-	 * @return The executions
-	 */
-	public Collection<Execution> getExecutions();
-	
-	/**
-	 * Returns all the executions which are paused at a particular
-	 * node.
-	 * @param node The current node for the paused execution
-	 * @return The paused executions
-	 */
-	public Collection<Execution> getPausedExecutions(Node node);
+public interface Process extends Container, Cancellable, Recordable {
 
     /**
-     * Finds the node with the given id.
-     * @param nodeId The id of the node
-     * @return The node
+     * Starts the process.
      */
-    public Node getNode(String nodeId);
+    void start();
+
+    /**
+     * Finishes the {@code Process} instance
+     * via "normal" termination.
+     */
+    void end();
+
+    /**
+     * The version of the {@link org.workhorse.graph.ProcessDiagram}
+     * with which this process was created.
+     * @return The process version
+     */
+    Version getVersion();
+
+    /**
+     * Gets the service for the given service type.
+     * @param serviceType The service type
+     * @return The service instance
+     */
+    <T> T getService(Class<T> serviceType);
 }

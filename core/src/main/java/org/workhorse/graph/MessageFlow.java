@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,9 +14,11 @@
 package org.workhorse.graph;
 
 import org.workhorse.event.Message;
-import org.workhorse.graph.node.CatchingNode;
+import org.workhorse.graph.event.CatchingNode;
 
 /**
+ * Represents a message flow.
+ *
  * @author  Brennan Spies
  */
 public class MessageFlow<M> 
@@ -26,7 +28,6 @@ public class MessageFlow<M>
 	/**
 	 * Returns the receiver that is the target of the message flow.
 	 * @return  The message receiver
-	 * @uml.property  name="target"
 	 */
 	public CatchingNode<Message<M>> getTarget() {
 		return target;
@@ -37,6 +38,6 @@ public class MessageFlow<M>
 	 * @param message The messasge to send
 	 */
 	public void send(Message<M> message) {
-		target.receiveEvent(message);
+		//target.receiveEvent(message);
 	}
 }

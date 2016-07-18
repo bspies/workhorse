@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,47 +13,41 @@
  */
 package org.workhorse.exec.ctx;
 
-import org.workhorse.Identifiable;
-import org.workhorse.var.Name;
-import org.workhorse.var.Variable;
-
-import java.util.Set;
+import org.workhorse.type.val.Value;
 
 /**
- * The variable context in a process, corresponding to a given block.
- * @param <N> The name type used to reference the variable
+ * Represents the execution context.
+ *
+ * @author Brennan Spies
  */
-public interface Context<N extends Name> extends Identifiable<Long>
-{
+public interface Context {
     /**
-	 * Checks to see if variable exists in this context.
-	 *
-     * @param name The variable name
-     * @return True if variable exists in this context, false otherwise
-	 */
-	public boolean hasVariable(N name);
+     * Returns a readable symbol from the context.
+     * @param type The value type
+     * @param name The value name
+     * @return The value
+     */
+    <V> Value<V> getReadable(Class<V> type, String name);
 
     /**
-     * Returns the variable with the given name, or null if not
-	 * defined in this context.
-     * @param name The variable name
-     * @param type The variable type
-     * @return The variable or null
+     * Returns a readable symbol from the context.
+     * @param name The value name
+     * @return The value
      */
-    public <T> Variable<T> getVariable(N name, Class<T> type);
-	
-	/**
-	 * Returns the variable with the given name, or null if not
-	 * defined in this context.
-	 *
-     * @param name The variable name
-     * @return The variable or null
-	 */
-	public Variable<?> getVariable(N name);
+    Value<?> getReadable(String name);
 
     /**
-     * Returns the variable names present in this context.
-     * @return The variable names
+     * Returns true if a symbol with
+     * the given name exists in this context.
+     * @param name The symbol name
+     * @return True if exists, false otherwise
      */
-    public Set<N> getVariableNames();
+    boolean hasSymbol(String name);
+
+    /**
+     * Returns all the symbol names in this
+     * context.
+     * @return The names
+     */
+    Iterable<String> getNames();
 }

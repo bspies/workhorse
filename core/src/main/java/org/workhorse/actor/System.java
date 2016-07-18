@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@ package org.workhorse.actor;
 /**
  * @author Brennan Spies
  *
- * <p><code>System</code> is an abstract representation of an external
+ * {@code System} is an abstract representation of an external
  * (non-human) system with which the process can interact.</p>
  */
 public interface System extends Actor {

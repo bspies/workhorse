@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,19 +13,12 @@
  */
 package org.workhorse.activity;
 
-import org.workhorse.exec.ctx.LocalContext;
-
 /**
  * Actions are automated activities in a process. They represent a "plug-in"
  * interface to the workflow where custom logic can be provided.
  *
  * @author Brennan Spies
  */
-public interface Action extends Activity
+public interface Action extends AtomicActivity
 {
-	/**
-	 * Defines the execution of the action.
-     * @param context The variable context
-     */
-	public void execute(LocalContext context);
 }

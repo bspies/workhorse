@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,26 +16,28 @@ package org.workhorse.event;
 import org.workhorse.actor.Actor;
 
 /**
+ * Represents a message event.
+ *
  * @author Brennan Spies
  *
  */
-public interface Message<T> extends ThrownEvent<Message<T>> 
+public interface Message<T> extends ThrownEvent<Message<T>>
 {
 	/**
      * Returns the title of the message.
 	 * @return The title
 	 */
-	public String getTitle();
+	String getTitle();
 	
 	/**
      * Returns the message recipient.
 	 * @return The recipient
 	 */
-	public Actor getRecipient();
+	Actor getRecipient();
 	
 	/**
 	 * Returns the content of the message.
 	 * @return The content
 	 */
-	public T getContent();
+	T getContent();
 }

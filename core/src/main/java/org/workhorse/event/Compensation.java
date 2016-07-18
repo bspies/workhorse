@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,7 @@
  */
 package org.workhorse.event;
 
-import org.workhorse.graph.node.Node;
-
+import org.workhorse.graph.Node;
 import com.google.inject.TypeLiteral;
 
 /**
@@ -22,13 +21,13 @@ import com.google.inject.TypeLiteral;
  *
  * @author  Brennan Spies
  */
-public class Compensation extends BaseEvent implements ThrownEvent<Compensation> 
+public class Compensation extends BaseEvent implements ThrownEvent<Compensation>
 {
 	public static final EventType<Compensation> type =
 		new EventType<Compensation>(new TypeLiteral<Compensation>(){});
 	
 	/**
-     * Constructs a compenstation event with the event source.
+     * Constructs a compensation event with the event source.
 	 * @param source The source node
 	 */
 	public Compensation(Node source) {

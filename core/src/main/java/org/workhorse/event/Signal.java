@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,5 +28,5 @@ public interface Signal extends ThrownEvent<Signal>
 	 * signal event.
 	 * @return The properties
 	 */
-	public Map<String,Serializable> getProperties();
+	Map<String,Serializable> getProperties();
 }

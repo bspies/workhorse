@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,31 +13,26 @@
  */
 package org.workhorse.actor;
 
-import java.util.Collection;
-
-import org.workhorse.Element;
 import org.workhorse.activity.Task;
-import org.workhorse.actor.role.Position;
 
 /**
  * Represents a single individual who is a user of the system.
  *
  * @author Brennan Spies
  */
-public class User extends Element implements Actor
+public class User extends BaseActor
 {
-    private String email, name;
+    private String email;
 
-    //internal use only
-    public User() {}
-
-    /**
-     * Creates a user.
-     * @param name The user name
-     */
-    public User(String name) {
-        this.name = name;
-    }
+	/**
+	 * Default constructor.
+	 *
+	 * @param id   The user id
+	 * @param name The name of the user
+	 */
+	public User(long id, String name) {
+		super(id, name);
+	}
 
 	/**
 	 * Gets the user's email.
@@ -47,13 +42,12 @@ public class User extends Element implements Actor
        return email;
     }
 
+	/**
+	 * Set the user's email.
+	 * @param email The email
+     */
     public void setEmail(String email) {
        this.email = email;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 	
 	/**

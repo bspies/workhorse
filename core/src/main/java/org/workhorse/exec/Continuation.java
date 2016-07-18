@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,53 +13,45 @@
  */
 package org.workhorse.exec;
 
-import org.workhorse.Element;
-import org.workhorse.graph.node.Node;
+import org.workhorse.graph.Node;
+
+import java.util.UUID;
 
 /**
- * Captures the position of a paused {@link Execution}, so that it
+ * Captures the state of a paused {@link Execution}, so that it
  * can be resumed later.
  *
  * @author Brennan Spies
  */
-public class Continuation extends Element
-{
-	private Execution execution;
-    private String nodeId;
-	private Phase phase;
+public class Continuation {
 
-    //For JPA only
-    public Continuation() {}
-	
-	public Continuation(Execution execution, Node node, Phase phase) {
-        this.execution = execution;
-		this.nodeId = node.getId();
-		this.phase = phase;
-	}
-	
-	/**
-	 * Returns the {@code Node} where the {@code Execution} will
-	 * resume.
-	 * @return The node where the execution will resume
-	 */
-	public String getNodeId() {
-		return nodeId;
-	}
-	
-	/**
-	 * Returns the phase in which the {@code Execution} will
-	 * resume.
-	 * @return The phase of node traversal
-	 */
-	public Phase getPhase() {
-		return phase;
-	}
+    private UUID executionId;
+    private String nodeId;
 
     /**
-     * Returns the execution that this continuation is related to.
-     * @return The execution
+     * Creates a continuation from the given execution and the
+     * node at which it is paused.
+     * @param execution The execution
+     * @param currentNode The current node
      */
-    public Execution getExecution() {
-        return execution;
+    public Continuation(Execution execution, Node currentNode) {
+        this.executionId = execution.getId();
+        this.nodeId = currentNode.getId();
+    }
+
+    /**
+     * The id of the execution
+     * @return The id
+     */
+    public UUID getExecutionId() {
+        return executionId;
+    }
+
+    /**
+     * The id of the node at which the execution is paused.
+     * @return The node id
+     */
+    public String getNodeId() {
+        return nodeId;
     }
 }

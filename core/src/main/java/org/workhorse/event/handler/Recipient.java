@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,20 +13,19 @@
  */
 package org.workhorse.event.handler;
 
+import com.google.inject.TypeLiteral;
 import org.workhorse.event.EventType;
 import org.workhorse.event.Message;
 import org.workhorse.exec.Execution;
-
-import com.google.inject.TypeLiteral;
 
 /**
  * The {@code Recipient} is an event handler for {@link Message} events.
  *
  * @author Brennan Spies
  */
-public class Recipient<T> implements Catcher<Message<T>> 
+public class Recipient<T> implements Catcher<Message<T>>
 {
-	private final EventType<Message<T>> type = 
+	private final EventType<Message<T>> type =
 		new EventType<Message<T>>(new TypeLiteral<Message<T>>(){});
 	
 	/**

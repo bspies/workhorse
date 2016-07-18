@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,12 +27,12 @@ public interface Catcher<E extends ThrownEvent<E>> extends Handler<E> {
 	 * Returns class of event for this catcher.
 	 * @return The type token
 	 */
-	public EventType<E> forType();
+	EventType<E> forType();
 	
 	/**
 	 * Returns true if event matches this catcher.
 	 * @param event The event to test
 	 * @return True if event matches
 	 */
-	public boolean matches(E event);
+	boolean matches(E event);
 }

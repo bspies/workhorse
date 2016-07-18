@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,6 @@
  */
 package org.workhorse.event;
 
-import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 
 /**
@@ -28,14 +27,11 @@ public class EventType<E extends ThrownEvent<E>>
 	
 	/**
 	 * Constructor for simple event types, i.e., where there
-	 * is a one-to-one correspondence betweeen the class of
-	 * the {@link Event} and the <code>EventType</code>.
+	 * is a one-to-one correspondence between the class of
+	 * the {@link Event} and the {@code EventType}.
 	 * @param type The type literal
 	 */
-	@Inject
-	public EventType(TypeLiteral<E> type) {
-		this.type = type;
-	}
+	public EventType(TypeLiteral<E> type) {this.type = type;}
 
 	/**
 	 * @see java.lang.Object#hashCode()
@@ -48,7 +44,8 @@ public class EventType<E extends ThrownEvent<E>>
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override public boolean equals(Object obj) {
+	@Override
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,16 +16,15 @@ package org.workhorse.actor;
 import java.util.Collection;
 
 /**
- * @author Brennan Spies
- *
  * A defined group of users.
+ *
+ * @author Brennan Spies
  */
-public interface UserGroup extends Actor
-{
+public interface UserGroup extends Actor {
 	/**
 	 * Returns all of the users that belong
 	 * to this group.
 	 * @return The users
 	 */
-	public Collection<User> getUsers();
+	Collection<User> getUsers();
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,50 +13,37 @@
  */
 package org.workhorse.process;
 
-import java.util.Collection;
+import org.workhorse.Describable;
+import org.workhorse.activity.Activity;
+import org.workhorse.graph.exec.ActivityNode;
+import org.workhorse.id.Identifiable;
+import org.workhorse.exec.Contextual;
 
-import org.workhorse.Cancellable;
-import org.workhorse.Identifiable;
-import org.workhorse.Stoppable;
-import org.workhorse.activity.Task;
-import org.workhorse.exec.Executable;
-import org.workhorse.factory.ActivityFactory;
+import java.util.UUID;
 
 /**
- * Represents an instance of any executable container of activities.
+ * Represents an instance of any container of {@link org.workhorse.activity.Activity}
+ * elements.
  *
  * @author Brennan Spies
  */
-public interface Container extends Identifiable<Long>, Executable, Stoppable, Cancellable
-{
-	/**
-	 * Retrieves all tasks that are still active.
-	 * @return The active tasks
-	 */
-	public Collection<Task> getActiveTasks();
-	
-	/**
-	 * Retrieves all tasks.
-	 * @return The tasks
-	 */
-	public Collection<Task> getTasks();
-	
-	/**
-	 * Returns the factory for creating instances of different <code>Activity</code>
-	 * types.
-	 * @return The task factory
-	 */
-	public ActivityFactory getActivityFactory();
-	
-	/**
-	 * Gets the state of the process.
-	 * @return The process state
-	 */
-	public State getState();
-	
-	/**
-	 * Returns true if the executable instance is active.
-	 * @return True if active, false otherwise
-	 */
-	public boolean isActive();
+public interface Container extends Contextual, Identifiable<UUID>, Describable {
+    /**
+     * Returns the current state of this container.
+     * @return The current state
+     */
+    State getState();
+
+    /**
+     * Returns true if the executable instance is active.
+     * @return True if active, false otherwise
+     */
+    boolean isActive();
+
+    /**
+     * Evaluates the output of an activity.
+     * @param activity The activity
+     * @param activityNode The activity node
+     */
+    <T extends Activity> void evaluateOutput(T activity, ActivityNode<T> activityNode);
 }

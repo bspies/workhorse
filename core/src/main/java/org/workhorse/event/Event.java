@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  */
 package org.workhorse.event;
 
-import org.workhorse.graph.node.Node;
+import org.workhorse.graph.Node;
 
 /**
  * Common interface for all process events.
@@ -26,5 +26,5 @@ public interface Event
 	 * Returns the source of the event
 	 * @return The event source
 	 */
-	public Node getSource();
+	Node getSource();
 }

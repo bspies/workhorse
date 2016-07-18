@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,19 +14,19 @@
 package org.workhorse.expr;
 
 import org.workhorse.exec.ctx.Context;
-import org.workhorse.var.Name;
-
 
 /**
- * @author Brennan Spies
+ * Interface for expressions that can be
+ * evaluated to obtain a result.
  *
+ * @author Brennan Spies
  */
-public interface Expression<V> 
-{
-	/**
-	 * Evaluates the expression given the execution context.
-	 * @param context The execution context
-     * @return The result of evaluation
-	 */
-	public V evaluate(Context<? extends Name> context);
+@FunctionalInterface
+public interface Expression<V> {
+    /**
+     * Evaluates the expression.
+     * @param context The execution context
+     * @return The evaluation result
+     */
+    V evaluate(Context context);
 }

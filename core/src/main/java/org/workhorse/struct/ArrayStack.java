@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ public class ArrayStack<E> implements Stack<E>, Cloneable, Serializable
 	 * Creates a new {@code ArrayStack}.
 	 */
 	public ArrayStack() {
-		list = new ArrayList<E>();
+		list = new ArrayList<>();
 	}
 	
 	/**
@@ -49,33 +49,37 @@ public class ArrayStack<E> implements Stack<E>, Cloneable, Serializable
 	/**
 	 * @see java.lang.Object#clone()
 	 */
-	@Override public Object clone() throws CloneNotSupportedException {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
 
 	/**
 	 * @see org.workhorse.struct.Stack#peek()
 	 */
-	@Override public E peek() throws EmptyStackException {
+	@Override
+	public E peek() throws EmptyStackException {
 		checkNotEmpty();
 		return list.get(list.size() - 1);
 	}
-	
+
 	/**
 	 * @see org.workhorse.struct.Stack#peek(int)
 	 */
-	@Override public E peek(int index) {
+	@Override
+	public E peek(int index) {
 		return list.get(index);
 	}
 
 	/**
 	 * @see org.workhorse.struct.Stack#pop()
 	 */
-	@Override public E pop() throws EmptyStackException {
+	@Override
+	public E pop() throws EmptyStackException {
 		checkNotEmpty();
 		return list.remove(list.size()-1);
 	}
-	
+
 	//throws exception if stack is empty
 	private void checkNotEmpty() {
 		if(list.size()==0)
@@ -85,37 +89,42 @@ public class ArrayStack<E> implements Stack<E>, Cloneable, Serializable
 	/**
 	 * @see org.workhorse.struct.Stack#push(java.lang.Object)
 	 */
-	@Override public E push(E item) {
+	@Override
+	public E push(E item) {
 		if(list.add(item))
 			return item;
 		return null;
 	}
-	
+
 	/**
 	 * @see org.workhorse.struct.Stack#pushAll(java.util.Collection)
 	 */
-	@Override public boolean pushAll(Collection<E> items) {
+	@Override
+	public boolean pushAll(Collection<E> items) {
 		boolean b = true;
 		for(E item : items)
 			b &= list.add(item);
 		return b;
 	}
 
-    @Override public List<E> asList() {
+    @Override
+	public List<E> asList() {
         return list;
     }
 	
 	/**
 	 * @see org.workhorse.struct.Stack#clear()
 	 */
-    @Override public void clear() {
+    @Override
+	public void clear() {
 		list.clear();
 	}
 
 	/**
 	 * @see org.workhorse.struct.Stack#size()
 	 */
-    @Override public int size() {
+    @Override
+	public int size() {
 		return list.size();
 	}
 

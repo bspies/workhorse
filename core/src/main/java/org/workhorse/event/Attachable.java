@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,12 +14,13 @@
 package org.workhorse.event;
 
 import org.workhorse.graph.SequenceFlow;
-import org.workhorse.graph.node.ActivityNode;
+import org.workhorse.graph.exec.ActivityNode;
 
 /**
+ * Marks an event that can be attached to an {@link org.workhorse.activity.Activity Activity}
+ * and enable alternative flow.
+ *
  * @author Brennan Spies
- * <p>Marks an event that can be attached to an {@link org.workhorse.activity.Activity Activity}
- * and enable alternative flow.</p>
  */
 public interface Attachable 
 {
@@ -27,11 +28,11 @@ public interface Attachable
 	 * Returns the source to which this {@link Event} is attached.
 	 * @return The source ActivityNode
 	 */
-	public ActivityNode getAttachSource();
+	ActivityNode getAttachSource();
 	
 	/**
 	 * The transition of the exception flow, if any.
 	 * @return The target of the event
 	 */
-	public SequenceFlow getTransition();
+	SequenceFlow getFlow();
 }

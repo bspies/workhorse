@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,7 @@
  */
 package org.workhorse.event;
 
-import org.workhorse.graph.node.Node;
-
+import org.workhorse.graph.Node;
 import com.google.inject.TypeLiteral;
 
 /**
@@ -22,8 +21,8 @@ import com.google.inject.TypeLiteral;
  */
 public class Cancellation extends BaseEvent implements ThrownEvent<Cancellation>
 {
-	public static final EventType<Cancellation> type = 
-		new EventType<Cancellation>(new TypeLiteral<Cancellation>(){});
+	public static final EventType<Cancellation> type =
+			new EventType<>(new TypeLiteral<Cancellation>() {});
 	private String reason;
 	
 	/**

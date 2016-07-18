@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,9 +14,10 @@
 package org.workhorse.expr;
 
 /**
- * A {@code Condition} is an expression that evaluates to a
- * boolean result.
+ * A {@code Condition} is a boolean {@link Expression}.
  *
  * @author Brennan Spies
  */
-public interface Condition extends Expression<Boolean> {}
+@FunctionalInterface
+public interface Condition extends Expression<Boolean> {
+}

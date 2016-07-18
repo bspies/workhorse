@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,31 +13,23 @@
  */
 package org.workhorse.runtime;
 
-import org.workhorse.Startable;
-import org.workhorse.Stoppable;
-import org.workhorse.api.AdminApi;
-import org.workhorse.api.ClientApi;
-
-import java.io.Serializable;
+import org.workhorse.graph.ProcessDiagram;
+import org.workhorse.process.Process;
+import org.workhorse.type.val.Value;
 
 /**
  * The WorkHorse runtime engine.
  *
  * @author Brennan Spies
  */
-public interface Engine extends Startable, Stoppable
-{
-	/**
-	 * Returns an administrative client to the engine.
-	 * @param credentials The user credentials of the admin
-	 * @return The admin client
-	 */
-	public AdminApi getAdminClient(Serializable credentials);
+public interface Engine {
 
-	/**
-	 * Returns a client to the engine.
-	 * @param credentials The user credentials for the client
-	 * @return The client
-	 */
-	public ClientApi getClient(Serializable credentials);
+    /**
+     * Creates a {@code Process} instance from the given
+     * process diagram.
+     * @param processDiagram The process diagram
+     * @param initialValues The initial context values (if any)
+     * @return The process instance
+     */
+    Process create(ProcessDiagram processDiagram, Value<?>... initialValues);
 }

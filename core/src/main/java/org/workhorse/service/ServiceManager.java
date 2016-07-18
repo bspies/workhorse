@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,63 +13,20 @@
  */
 package org.workhorse.service;
 
-import org.workhorse.util.Maps;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.workhorse.util.Attribute;
 
 /**
- * Manager for {@link Service} instances. Each service is registered uniquely by
- * its type.
+ * An interface for managing process services. Multiple services per
+ * service interface is allowed as long as the services are distinguished
+ * by a unique set of {@link Attribute} values.
  *
  * @author Brennan Spies
  */
-public class ServiceManager
-{
-    private Map<Class<? extends Service>, Service> registry;
-
+public interface ServiceManager {
     /**
-     * Default constructor.
+     *
+     * @param serviceType The service type
+     * @return The service instance
      */
-    public ServiceManager() {
-        registry = Maps.newHashMap();
-    }
-
-    /**
-     * Registers a {@code Service}.
-     * @param service The service instance
-     * @param <S>  The service type
-     */
-    public <S extends Service> void registerService(S service) {
-        registry.put(service.getClass(), service);
-    }
-
-    /**
-     * Gets a service.
-     * @param serviceType The class of the service interface
-     * @param <S> The service type
-     * @return The service implementation
-     */
-    @SuppressWarnings("unchecked")
-    public <S extends Service> S getService(Class<S> serviceType) {
-        return (S)registry.get(serviceType);
-    }
-
-    /**
-     * Starts all registered services.
-     */
-    public void startServices() {
-        for(Service s : registry.values()) {
-            s.start();
-        }
-    }
-
-    /**
-     * Shuts down all regsitered services.
-     */
-    public void stopServices() {
-        for(Service s : registry.values()) {
-            s.shutdown();
-        }
-    }
+    <S> S getService(Class<S> serviceType, Attribute<?>... attributes);
 }

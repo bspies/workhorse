@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,15 @@
  */
 package org.workhorse.graph;
 
-import java.util.Collection;
-
 import org.workhorse.actor.Actor;
+
+import java.util.Collection;
 
 
 /**
+ * A {@code Pool} represents a participant in the process.
+ *
  * @author Brennan Spies
- * <p>A <code>Pool</code> represents a participant in the process.</p>
  */
 public interface Pool
 {	
@@ -28,17 +29,17 @@ public interface Pool
 	 * Returns true if this is the main pool in the process.
 	 * @return True if this is main pool
 	 */
-	public boolean isMain();
+	boolean isMain();
 	
 	/**
 	 * Returns the lanes contained by this pool (must be at least one).
 	 * @return The swim lanes
 	 */
-	public Collection<Lane> getLanes();
+	Collection<Lane> getLanes();
 	
 	/**
 	 * Returns the <code>Actor</code> that represents the pool's participant.
 	 * @return The participant
 	 */
-	public Actor getParticipant();
+	Actor getParticipant();
 }

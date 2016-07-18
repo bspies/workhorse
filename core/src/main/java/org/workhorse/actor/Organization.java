@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,6 @@
  */
 package org.workhorse.actor;
 
-import org.workhorse.Element;
-
 import java.util.Collection;
 
 /**
@@ -23,21 +21,26 @@ import java.util.Collection;
  *
  * @author Brennan Spies
  */
-public class Organization extends Element implements Actor
+public class Organization extends BaseActor
 {
-    private String name;
     private Collection<UserGroup> groups;
 
-	/**
+    /**
+     * Default constructor.
+     *
+     * @param id   The organization id
+     * @param name The name of the actor
+     */
+    public Organization(long id, String name) {
+        super(id, name);
+    }
+
+    /**
 	 * Returns the user groups that comprise the
 	 * organization.
 	 * @return The user groups
 	 */
 	public Collection<UserGroup> getGroups() {
         return groups;
-    }
-
-    @Override public String getName() {
-        return name;
     }
 }

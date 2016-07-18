@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,19 +13,18 @@
  */
 package org.workhorse.activity;
 
-import java.util.Collection;
-
 import org.workhorse.actor.User;
 import org.workhorse.exec.ctx.Context;
 
+import java.util.Collection;
+
 /**
- * @author Brennan Spies
- *<p>
- * An <code>Allocation</code> respresents the designation of potential resources
+ * An {@code llocation} respresents the designation of potential resources
  * for the completion of a {@link Task}. If more than one resource is allocated
  * some method, such as voluntary acquisition, may be used to determine the actual
  * task performer.
- * </p>
+ *
+ * @author Brennan Spies
  */
 public interface Allocation 
 {	
@@ -34,5 +33,5 @@ public interface Allocation
 	 * @param context The variable context
      * @return The potential task performers
 	 */
-	public Collection<User> determine(Context context);
+	Collection<User> determine(Context context);
 }

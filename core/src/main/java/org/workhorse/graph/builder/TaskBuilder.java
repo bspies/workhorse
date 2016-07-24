@@ -15,12 +15,19 @@
  */
 package org.workhorse.graph.builder;
 
-import org.workhorse.graph.Node;
-import org.workhorse.util.Builder;
+import org.workhorse.graph.exec.TaskNode;
 
 /**
- * Builder nterface for {@link org.workhorse.graph.Node} instances.
+ * Implementation of {@link NodeBuilder} for building {@link TaskNode} objects.
+ *
+ * @author Brennan Spies
  */
-public interface NodeBuilder<T extends Node> extends Builder<T> {
+public class TaskBuilder implements NodeBuilder<TaskNode> {
 
+    private TaskNode node;
+
+    /** Builds the task node */
+    @Override public TaskNode build() {
+        return null;
+    }
 }

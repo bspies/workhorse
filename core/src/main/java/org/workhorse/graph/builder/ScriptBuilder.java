@@ -15,12 +15,25 @@
  */
 package org.workhorse.graph.builder;
 
-import org.workhorse.graph.Node;
-import org.workhorse.util.Builder;
+import org.workhorse.graph.exec.ScriptNode;
+import org.workhorse.script.ScriptResource;
 
 /**
- * Builder nterface for {@link org.workhorse.graph.Node} instances.
+ * Implementation of {@link NodeBuilder} for building {@link ScriptNode}
+ * objects.
+ *
+ * @author Brennan Spies
  */
-public interface NodeBuilder<T extends Node> extends Builder<T> {
+public class ScriptBuilder implements NodeBuilder<ScriptNode> {
 
+    private ScriptNode node;
+
+    ScriptBuilder(ScriptResource resource) {
+
+    }
+
+    /** Builds the script node. */
+    @Override public ScriptNode build() {
+        return node;
+    }
 }

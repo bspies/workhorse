@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2009-2016 Brennan Spies
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,8 +32,23 @@ public class DiagramBuilder implements Builder<Diagram> {
 
     private ProcessDiagram diagram;
 
-    public DiagramBuilder(String processName, Version version) {
-        diagram = new WorkflowDiagram(processName, version);
+    private DiagramBuilder(ProcessDiagram diagram) {
+        this.diagram = diagram;
+    }
+
+    public static DiagramBuilder newWorkflowDiagram(String processName, Version version) {
+        DiagramBuilder diagramBuilder = new DiagramBuilder(new WorkflowDiagram(processName, version));
+        return diagramBuilder;
+    }
+
+    /**
+     * Adds a node to the diagram.
+     * @param nodeBuilder The node builder
+     * @return The diagram builder
+     */
+    public DiagramBuilder withNode(NodeBuilder<? extends Node> nodeBuilder) {
+        diagram.addNode(nodeBuilder.build());
+        return this;
     }
 
     /**

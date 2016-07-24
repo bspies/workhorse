@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2009-2016 Brennan Spies
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +25,8 @@ import javax.inject.Inject;
 
 /**
  * The standard implementation of the Workhorse runtime engine.
+ *
+ * @author Brennan Spies
  */
 public class WorkflowEngine implements Engine {
 

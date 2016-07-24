@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2009-2016 Brennan Spies
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +17,12 @@ package org.workhorse.util;
 
 /**
  * Generic interface for defining builders.
+ *
+ * @author Brennan Spies
  */
 public interface Builder<T> {
     /**
-     * Builds the instance of type {@ T}.
+     * Builds the instance of type {@code T}.
      * @return The built instance
      */
     T build();

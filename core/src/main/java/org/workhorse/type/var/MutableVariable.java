@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2009-2016 Brennan Spies
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +21,8 @@ import org.workhorse.type.val.Value;
  * A simple implementation of {@link Variable} that
  * mutates the value "in-place", i.e. over-writing any
  * existing value.
+ *
+ * @author Brennan Spies
  */
 public class MutableVariable<V> extends BaseVariable<V> implements Variable<V> {
 

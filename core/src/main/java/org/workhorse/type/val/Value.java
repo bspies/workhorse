@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2009-2016 Brennan Spies
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +18,8 @@ package org.workhorse.type.val;
 /**
  * Represents a symbol in the workflow system that has
  * a name and value.
+ *
+ * @author Brennan Spies
  */
 public interface Value<V> {
 

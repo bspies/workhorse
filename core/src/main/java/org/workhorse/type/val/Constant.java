@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2009-2016 Brennan Spies
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +19,8 @@ import org.workhorse.type.var.Variable;
 
 /**
  * An immutable value.
+ *
+ * @author Brennan Spies
  */
 public class Constant<V> extends BaseValue<V> implements Value<V> {
 

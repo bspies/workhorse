@@ -9,6 +9,9 @@
 *.ipr
 *.iws
 
+# Maven
+target/
+
 # Java
 *.class
 *.jar

@@ -26,7 +26,7 @@ import com.google.inject.TypeLiteral;
 public class Compensation extends BaseEvent implements ThrownEvent<Compensation>
 {
 	public static final EventType<Compensation> type =
-		new EventType<Compensation>(new TypeLiteral<Compensation>(){});
+			new EventType<>(new TypeLiteral<Compensation>() {});
 	
 	/**
      * Constructs a compensation event with the event source.

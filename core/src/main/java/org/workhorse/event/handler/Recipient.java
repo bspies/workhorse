@@ -28,7 +28,7 @@ import org.workhorse.exec.Execution;
 public class Recipient<T> implements Catcher<Message<T>>
 {
 	private final EventType<Message<T>> type =
-		new EventType<Message<T>>(new TypeLiteral<Message<T>>(){});
+			new EventType<>(new TypeLiteral<Message<T>>() {});
 	
 	/**
 	 * {@inheritDoc}

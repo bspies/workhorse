@@ -31,7 +31,7 @@ import java.util.Collection;
 public class ProcessEnvironment implements Environment {
 
     private DependencyManager dependencyMgr;
-    private Collection<Value<?>> initalValues = new ArrayList<>();
+    private Collection<Value<?>> initialValues = new ArrayList<>();
 
     /**
      * Creates the environment.
@@ -50,12 +50,12 @@ public class ProcessEnvironment implements Environment {
     /** {@inheritDoc} */
     @Override
     public void setInitialValues(Value<?>... values) {
-        initalValues.addAll(Arrays.asList(values));
+        initialValues.addAll(Arrays.asList(values));
     }
 
     /** {@inheritDoc} */
     @Override
     public Iterable<Value<?>> getInitialValues() {
-        return initalValues;
+        return initialValues;
     }
 }

@@ -17,11 +17,13 @@ package org.workhorse.actor;
 
 import org.workhorse.id.Identifiable;
 
+import java.util.UUID;
+
 /**
  * @author Brennan Spies
  *
  */
-public interface Actor extends Identifiable<Long>
+public interface Actor extends Identifiable<UUID>
 {
 	/**
 	 * Returns the name of the actor.

@@ -15,6 +15,10 @@
  */
 package org.workhorse.actor;
 
+import org.workhorse.actor.person.Name;
+
+import java.util.Locale;
+
 /**
  * Base implementation of the {@link Actor} interface.
  *
@@ -23,14 +27,14 @@ package org.workhorse.actor;
 public class BaseActor implements Actor {
 
     private long id;
-    private String name;
+    private Name name;
 
     /**
      * Default constructor.
      * @param id The actor id
      * @param name The name of the actor
      */
-    public BaseActor(long id, String name) {
+    public BaseActor(long id, Name name) {
         this.id = id;
         this.name = name;
     }
@@ -41,7 +45,7 @@ public class BaseActor implements Actor {
     }
 
     /** {@inheritDoc} */
-    @Override public String getName() {
-        return null;
+    @Override public String getDisplayName() {
+        return name.getDisplay(Locale.getDefault());  //todo allow dynamic Locale?
     }
 }

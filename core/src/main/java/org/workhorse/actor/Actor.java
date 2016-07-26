@@ -27,5 +27,5 @@ public interface Actor extends Identifiable<Long>
 	 * Returns the name of the actor.
 	 * @return The name
 	 */
-	String getName();
+	String getDisplayName();
 }

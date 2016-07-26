@@ -15,6 +15,7 @@
  */
 package org.workhorse.graph;
 
+import org.workhorse.activity.Activity;
 import org.workhorse.actor.Actor;
 
 import java.util.Collection;
@@ -25,23 +26,42 @@ import java.util.Collection;
  *
  * @author Brennan Spies
  */
-public interface Pool
-{	
+public class Pool
+{
+	private boolean main;
+    private Collection<Lane> lanes;
+    private Actor participant;
+
 	/**
 	 * Returns true if this is the main pool in the process.
 	 * @return True if this is main pool
 	 */
-	boolean isMain();
+	boolean isMain() {
+		return main;
+	}
+
+    /**
+     * Sets the main flag to indicate whether or not
+     * this pool is the main one.
+     * @param isMainPool True if this pool is main
+     */
+	void setMain(boolean isMainPool) {
+	    this.main = isMainPool;
+    }
 	
 	/**
 	 * Returns the lanes contained by this pool (must be at least one).
 	 * @return The swim lanes
 	 */
-	Collection<Lane> getLanes();
+	Collection<Lane> getLanes() {
+	    return lanes;
+    }
 	
 	/**
 	 * Returns the <code>Actor</code> that represents the pool's participant.
 	 * @return The participant
 	 */
-	Actor getParticipant();
+	Actor getParticipant() {
+	    return participant;
+    }
 }

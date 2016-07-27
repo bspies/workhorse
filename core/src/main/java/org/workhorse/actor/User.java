@@ -19,7 +19,6 @@ import org.workhorse.activity.Task;
 import org.workhorse.actor.person.Name;
 
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Represents a single individual who is a user of the system.
@@ -43,10 +42,6 @@ public class User implements Actor
         this.name = name;
 	}
 
-    @Override public String getDisplayName() {
-        return name.getDisplay(Locale.getDefault()); //todo make Locale
-    }
-
     @Override public String getId() {
         return id;
     }
@@ -65,6 +60,11 @@ public class User implements Actor
      */
     public void setEmail(String email) {
        this.email = email;
+    }
+
+    /** {@inheritDoc}*/
+    @Override public String getDisplayName() {
+        return name.getDisplay(Locale.getDefault()); //todo make Locale
     }
 	
 	/**

@@ -16,9 +16,7 @@
 package org.workhorse.actor.role;
 
 
-import org.workhorse.process.Element;
-
-import java.util.UUID;
+import org.workhorse.id.Identifiable;
 
 /**
  * A {@code Role} is used to match participants in the process
@@ -27,26 +25,28 @@ import java.util.UUID;
  *
  * @author Brennan Spies
  */
-public class Role extends Element
+public class Role implements Identifiable<String>
 {
-	private String name;
+	private String name, id;
 	private Role parent;
 
 	/**
 	 * Default constructor.
-	 * @param id The element's id
+	 * @param id The role id
 	 */
-	public Role(UUID id) {
-		super(id);
+	public Role(String id, String name) {
+		this.id = id;
+        this.name = name;
 	}
 
 	/**
 	 * Creates a child role with it parent.
 	 * @param id The role id
+     * @param name The role name
 	 * @param parent The parent role
      */
-	public Role(UUID id, Role parent) {
-		this(id);
+	public Role(String id, String name, Role parent) {
+		this(id, name);
 		this.parent = parent;
 	}
 
@@ -65,6 +65,10 @@ public class Role extends Element
 	public Role getParent() {
 		return parent;
 	}
-	
+
+	@Override public String getId() {
+		return null;
+	}
+
 	//public Set<Privilege> getPrivileges();
 }

@@ -16,7 +16,6 @@
 package org.workhorse.actor;
 
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Represents an organizational unit, comprised of one
@@ -28,7 +27,7 @@ public class Organization implements Actor
 {
     private Collection<UserGroup> groups;
     private String name;
-    private UUID id;
+    private String id;
 
     /**
      * Default constructor.
@@ -36,7 +35,7 @@ public class Organization implements Actor
      * @param id   The organization id
      * @param name The name of the actor
      */
-    public Organization(UUID id, String name) {
+    public Organization(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -50,13 +49,11 @@ public class Organization implements Actor
         return groups;
     }
 
-    @Override
-    public String getDisplayName() {
+    @Override public String getDisplayName() {
         return name;
     }
 
-    @Override
-    public UUID getId() {
+    @Override public String getId() {
         return id;
     }
 }

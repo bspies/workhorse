@@ -30,7 +30,7 @@ public class User implements Actor
 {
     private String email;
 	private Name name;
-	private UUID id;
+	private String id;
 
 	/**
 	 * Default constructor.
@@ -38,7 +38,7 @@ public class User implements Actor
 	 * @param id   The user id
 	 * @param name The name of the user
 	 */
-	public User(UUID id, Name name) {
+	public User(String id, Name name) {
 		this.id = id;
         this.name = name;
 	}
@@ -47,7 +47,7 @@ public class User implements Actor
         return name.getDisplay(Locale.getDefault()); //todo make Locale
     }
 
-    @Override public UUID getId() {
+    @Override public String getId() {
         return id;
     }
 

@@ -26,25 +26,37 @@ public class WesternName implements Name {
 
     String firstName, middleName, lastName;
 
+    /**
+     * Creates a name with first (given) and last (family) names.
+     * @param firstName The first or given name
+     * @param lastName The last or family name
+     */
     public WesternName(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
+    /** {@inheritDoc}*/
     @Override
     public String getFamilyName() {
         return lastName;
     }
 
+    /**
+     * Returns the person's middle name
+     * @return The middle name
+     */
     public String getMiddleName() {
         return middleName;
     }
 
+    /** {@inheritDoc}*/
     @Override
     public String getGivenName() {
         return firstName;
     }
 
+    /** {@inheritDoc}*/
     @Override
     public String getDisplay(Locale locale) {
         //todo replace with template

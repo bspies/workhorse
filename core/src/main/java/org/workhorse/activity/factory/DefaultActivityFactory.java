@@ -29,6 +29,8 @@ import java.util.UUID;
 
 /**
  * Default implementation of {@link ActivityFactory}.
+ *
+ * @author Brennan Spies
  */
 public class DefaultActivityFactory implements ActivityFactory {
 

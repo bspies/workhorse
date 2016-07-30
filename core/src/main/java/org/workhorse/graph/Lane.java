@@ -15,6 +15,8 @@
  */
 package org.workhorse.graph;
 
+import org.workhorse.actor.role.Role;
+
 /**
  * Represents a swim lane in a BPMN diagram.
  *
@@ -22,21 +24,22 @@ package org.workhorse.graph;
  */
 public class Lane 
 {
-	private String roleName;
+	private Role role;
 	
 	/**
-	 * Constructor, takes the 
-	 * @param roleName The role name
+	 * Constructor, takes the role that
+	 * this lane represents.
+	 * @param role The role name
 	 */
-	public Lane(String roleName) {
-		this.roleName = roleName;
+	public Lane(Role role) {
+		this.role = role;
 	}
 	
 	/**
 	 * Returns the Role which is responsible for this Lane.
 	 * @return The owner role
 	 */
-	public String getRoleName() {
-		return roleName;
+	public Role getRole() {
+		return role;
 	}
 }

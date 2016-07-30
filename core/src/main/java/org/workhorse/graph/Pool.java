@@ -76,7 +76,7 @@ public class Pool
 	 * Returns the <code>Actor</code> that represents the pool's participant.
 	 * @return The participant
 	 */
-	Actor getParticipant() {
+	public Actor getParticipant() {
 	    return participant;
     }
 }

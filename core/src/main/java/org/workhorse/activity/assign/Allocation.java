@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.activity;
+package org.workhorse.activity.assign;
 
+import org.workhorse.activity.Task;
 import org.workhorse.actor.User;
 import org.workhorse.exec.ctx.Context;
 
 import java.util.Collection;
 
 /**
- * An {@code llocation} respresents the designation of potential resources
+ * An {@code Allocation} represents the designation of potential resources
  * for the completion of a {@link Task}. If more than one resource is allocated
  * some method, such as voluntary acquisition, may be used to determine the actual
  * task performer.

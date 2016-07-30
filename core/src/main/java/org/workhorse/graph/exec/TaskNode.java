@@ -15,6 +15,7 @@
  */
 package org.workhorse.graph.exec;
 
+import org.workhorse.activity.assign.Allocation;
 import org.workhorse.activity.Task;
 import org.workhorse.graph.Diagram;
 import org.workhorse.graph.Lane;
@@ -23,6 +24,9 @@ import org.workhorse.graph.Lane;
  * Represents a {@link org.workhorse.activity.Task} node.
  */
 public class TaskNode extends ActivityNode<Task> {
+
+    private Allocation allocation;
+
     /**
      * Constructor takes parent diagram and lane to which the exec
      * belongs.
@@ -33,6 +37,22 @@ public class TaskNode extends ActivityNode<Task> {
      */
     public TaskNode(String id, Diagram diagram, Lane lane) {  //todo task definition
         super(id, diagram, lane);
+    }
+
+    /**
+     * Returns the allocation for tasks created at this node.
+     * @return The task allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * Sets teh allocation for tasks created at this node.
+     * @param allocation The task allocation
+     */
+    public void setAllocation(Allocation allocation) {
+        this.allocation = allocation;
     }
 
     /** {@inheritDoc} */

@@ -15,10 +15,11 @@
  */
 package org.workhorse.graph;
 
-import org.workhorse.activity.Activity;
 import org.workhorse.actor.Actor;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 
 /**
@@ -32,11 +33,16 @@ public class Pool
     private Collection<Lane> lanes;
     private Actor participant;
 
+	public Pool(Actor participant) {
+	    lanes = new HashSet<>();
+		this.participant = participant;
+	}
+
 	/**
 	 * Returns true if this is the main pool in the process.
 	 * @return True if this is main pool
 	 */
-	boolean isMain() {
+	public boolean isMain() {
 		return main;
 	}
 
@@ -45,7 +51,7 @@ public class Pool
      * this pool is the main one.
      * @param isMainPool True if this pool is main
      */
-	void setMain(boolean isMainPool) {
+	public void setMain(boolean isMainPool) {
 	    this.main = isMainPool;
     }
 	
@@ -53,8 +59,17 @@ public class Pool
 	 * Returns the lanes contained by this pool (must be at least one).
 	 * @return The swim lanes
 	 */
-	Collection<Lane> getLanes() {
+	public Collection<Lane> getLanes() {
 	    return lanes;
+    }
+
+    /**
+     * Adds a lane to this pool.
+     * @param lane The lane to add
+     * @return True if lane added
+     */
+    public boolean addLane(Lane lane) {
+        return lanes.add(lane);
     }
 	
 	/**

@@ -18,6 +18,8 @@ package org.workhorse.util;
 /**
  * A variation of {@link java.util.function.Function}
  * with no return type.
+ *
+ * @author Brennan Spies
  */
 @FunctionalInterface
 public interface VoidFunction<T> {

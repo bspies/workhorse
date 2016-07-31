@@ -18,6 +18,8 @@ package org.workhorse.actor;
 import org.workhorse.id.Identifiable;
 
 /**
+ * An {@code Actor} represents a participant in a process.
+ *
  * @author Brennan Spies
  *
  */

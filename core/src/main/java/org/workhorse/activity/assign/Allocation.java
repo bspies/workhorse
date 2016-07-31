@@ -32,7 +32,7 @@ import java.util.Collection;
 public interface Allocation 
 {	
 	/**
-	 * Gets the potential users who can perform the <code>Task</code>.
+	 * Gets the potential users who can perform the {@link Task}.
 	 * @param context The variable context
      * @return The potential task performers
 	 */

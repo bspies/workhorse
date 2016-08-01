@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.actor;
+package org.workhorse.actor.org;
 
+import org.workhorse.actor.User;
 import org.workhorse.actor.person.Name;
 import org.workhorse.actor.role.Position;
 

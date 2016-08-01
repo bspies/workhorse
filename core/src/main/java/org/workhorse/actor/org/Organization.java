@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.actor;
+package org.workhorse.actor.org;
+
+import org.workhorse.actor.Actor;
+import org.workhorse.actor.UserGroup;
 
 import java.util.Collection;
 

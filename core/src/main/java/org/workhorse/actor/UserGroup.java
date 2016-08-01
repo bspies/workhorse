@@ -22,11 +22,11 @@ import java.util.Collection;
  *
  * @author Brennan Spies
  */
-public interface UserGroup extends Actor {
+public interface UserGroup<U extends User> extends Actor {
 	/**
 	 * Returns all of the users that belong
 	 * to this group.
 	 * @return The users
 	 */
-	Collection<User> getUsers();
+	Collection<U> getUsers();
 }

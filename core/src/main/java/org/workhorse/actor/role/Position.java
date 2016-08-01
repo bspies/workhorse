@@ -15,7 +15,7 @@
  */
 package org.workhorse.actor.role;
 
-import org.workhorse.actor.Organization;
+import org.workhorse.actor.org.Organization;
 import org.workhorse.actor.User;
 
 /**

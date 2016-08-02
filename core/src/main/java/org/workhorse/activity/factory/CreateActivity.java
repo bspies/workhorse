@@ -28,7 +28,7 @@ import java.util.UUID;
  * @author Brennan Spies
  */
 @FunctionalInterface
-public interface ActivityCreate<A extends Activity> {
+public interface CreateActivity<A extends Activity> {
     /**
      * @param instanceId The id of the created activity
      * @param node The activity node

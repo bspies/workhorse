@@ -50,7 +50,7 @@ public class DefaultActivityFactory implements ActivityFactory {
     /** {@inheritDoc} */
     @Override public <T extends Activity> T createActivity(ActivityNode<T> node, Context ctx) {
         Class<T> interfaceType = node.getInstanceType();
-        ActivityCreate<T> createFunction = functionMap.get(interfaceType);
+        CreateActivity<T> createFunction = functionMap.get(interfaceType);
         return createFunction.create(idGenerator.generate(), node, createActivityContext(node, ctx));
     }
 
@@ -66,23 +66,23 @@ public class DefaultActivityFactory implements ActivityFactory {
      */
     public static class FunctionMap {
 
-        private Map<Class<? extends Activity>,ActivityCreate<? extends Activity>> map;
+        private Map<Class<? extends Activity>,CreateActivity<? extends Activity>> map;
 
         public FunctionMap() {
             map = new HashMap<>();
         }
 
-        <A extends Activity> ActivityCreate<A> get(Class<A> activityType) {
+        <A extends Activity> CreateActivity<A> get(Class<A> activityType) {
             assertNotNull(activityType);
             @SuppressWarnings("unchecked")
-            ActivityCreate<A> createFunction = (ActivityCreate<A>) map.get(activityType);
+            CreateActivity<A> createFunction = (CreateActivity<A>) map.get(activityType);
             if(createFunction==null) {
                 throw new IllegalArgumentException(String.format("No create function exists for %s", activityType));
             }
             return createFunction;
         }
 
-        public <A extends Activity> void put(Class<A> activityType, ActivityCreate<A> createFunction) {
+        public <A extends Activity> void put(Class<A> activityType, CreateActivity<A> createFunction) {
             assertNotNull(activityType);
             map.put(activityType, createFunction);
         }

@@ -21,7 +21,7 @@ import org.workhorse.activity.Activity;
 import org.workhorse.activity.HumanTask;
 import org.workhorse.activity.Script;
 import org.workhorse.activity.Task;
-import org.workhorse.activity.factory.ActivityCreate;
+import org.workhorse.activity.factory.CreateActivity;
 import org.workhorse.activity.factory.ActivityFactory;
 import org.workhorse.activity.factory.DefaultActivityFactory;
 import org.workhorse.exec.ctx.VersionedContext;
@@ -47,8 +47,8 @@ public class CoreConfiguration extends AbstractModule {
             new TypeLiteral<IdGenerator<UUID>>(){};
     private final TypeLiteral<Class<? extends Activity>> ACTIVITY_TYPE =
             new TypeLiteral<Class<? extends Activity>>() {};
-    private final TypeLiteral<ActivityCreate<? extends Activity>> ACTIVITY_CREATE_TYPE =
-            new TypeLiteral<ActivityCreate<? extends Activity>>() {};
+    private final TypeLiteral<CreateActivity<? extends Activity>> ACTIVITY_CREATE_TYPE =
+            new TypeLiteral<CreateActivity<? extends Activity>>() {};
 
     @Override protected void configure() {
         bind(UUID_GEN).to(InstanceIdGenerator.class).asEagerSingleton();

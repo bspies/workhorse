@@ -29,14 +29,14 @@ public interface Context {
      * @param name The value name
      * @return The value
      */
-    <V> Value<V> getReadable(Class<V> type, String name);
+    <V> Value<V> getValue(Class<V> type, String name);
 
     /**
      * Returns a readable symbol from the context.
      * @param name The value name
      * @return The value
      */
-    Value<?> getReadable(String name);
+    Value<?> getValue(String name);
 
     /**
      * Returns true if a symbol with

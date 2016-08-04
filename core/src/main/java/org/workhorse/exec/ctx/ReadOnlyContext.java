@@ -43,13 +43,13 @@ public class ReadOnlyContext implements Context {
     }
 
     @Override
-    public <V> Value<V> getReadable(Class<V> type, String name) {
-        return readOnly(wrappedContext.getReadable(type, name));
+    public <V> Value<V> getValue(Class<V> type, String name) {
+        return readOnly(wrappedContext.getValue(type, name));
     }
 
     @Override
-    public Value<?> getReadable(String name) {
-        return readOnly(wrappedContext.getReadable(name));
+    public Value<?> getValue(String name) {
+        return readOnly(wrappedContext.getValue(name));
     }
 
     private <V> Value<V> readOnly(Value<V> symbol) {

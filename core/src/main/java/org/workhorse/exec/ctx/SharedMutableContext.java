@@ -68,9 +68,9 @@ public class SharedMutableContext extends BaseMutableContext<VersionedVariable> 
 
     /** {@inheritDoc} */
     @Override
-    public <V> VersionedVariable<V> getWritable(Class<V> type, String name) {
+    public <V> VersionedVariable<V> getVariable(Class<V> type, String name) {
         @SuppressWarnings("unchecked")
-        VersionedVariable<V> var = (VersionedVariable<V>) getWritable(name);
+        VersionedVariable<V> var = (VersionedVariable<V>) getVariable(name);
         if(var!=null && !type.isAssignableFrom(var.getType())) {
             throw new IllegalArgumentException(
                     String.format("Variable type %s is not assignable from %s", var.getType(), type)
@@ -80,7 +80,7 @@ public class SharedMutableContext extends BaseMutableContext<VersionedVariable> 
     }
 
     /** {@inheritDoc} */
-    @Override public VersionedVariable<?> getWritable(String name) {
+    @Override public VersionedVariable<?> getVariable(String name) {
         return getVariables().get(name);
     }
 

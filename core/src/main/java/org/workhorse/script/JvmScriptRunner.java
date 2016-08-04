@@ -42,7 +42,7 @@ public class JvmScriptRunner implements ScriptRunner {
         ScriptResource rsc = script.getScriptResource();
         ScriptEngine engine = mgr.getEngineByName("");  //todo put "language" or MIME on ScriptResource
         Context context = script.getContext();
-        context.getNames().forEach(n ->  engine.put(n, context.getReadable(n).getValue()));
+        context.getNames().forEach(n ->  engine.put(n, context.getValue(n).getValue()));
 
         try {
             engine.eval(rsc.getReader());

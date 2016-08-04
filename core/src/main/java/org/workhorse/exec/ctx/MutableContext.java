@@ -29,14 +29,14 @@ public interface MutableContext extends Context {
      * @param name The variable name
      * @return The variable
      */
-    <V> Variable<V> getWritable(Class<V> type, String name);
+    <V> Variable<V> getVariable(Class<V> type, String name);
 
     /**
      * Get a {@code Variable} with the given name.
      * @param name The variable name
      * @return The variable
      */
-    Variable<?> getWritable(String name);
+    Variable<?> getVariable(String name);
 
     /**
      * Returns true if a {@code Variable} with the given symbol name

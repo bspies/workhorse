@@ -51,9 +51,9 @@ abstract class BaseMutableContext<VAR extends Variable> extends BaseContext impl
     }
 
     /** {@inheritDoc} */
-    @Override public <V> Value<V> getReadable(Class<V> type, String name) {
+    @Override public <V> Value<V> getValue(Class<V> type, String name) {
         @SuppressWarnings("unchecked")
-        Value<V> val = (Value<V>) getReadable(name);
+        Value<V> val = (Value<V>) getValue(name);
         if(val!=null && !type.isAssignableFrom(val.getType())) {
             throw new IllegalArgumentException(
                 String.format("Variable type %s is not assignable from %s", val.getType(), type)
@@ -63,7 +63,7 @@ abstract class BaseMutableContext<VAR extends Variable> extends BaseContext impl
     }
 
     /** {@inheritDoc} */
-    @Override public Value<?> getReadable(String name) {
+    @Override public Value<?> getValue(String name) {
         boolean isWriteable;
         if(!((isWriteable= hasWritable(name)) || hasConstant(name))) {
             throw new IllegalArgumentException(

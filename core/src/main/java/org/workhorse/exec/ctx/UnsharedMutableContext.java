@@ -47,9 +47,9 @@ public class UnsharedMutableContext extends BaseMutableContext<Variable> {
     }
 
     /** {@inheritDoc} */
-    @Override public <V> Variable<V> getWritable(Class<V> type, String name) {
+    @Override public <V> Variable<V> getVariable(Class<V> type, String name) {
         @SuppressWarnings("unchecked")
-        Variable<V> var = (Variable<V>) getWritable(name);
+        Variable<V> var = (Variable<V>) getVariable(name);
         if(var!=null && !type.isAssignableFrom(var.getType())) {
             throw new IllegalArgumentException(
                     String.format("Variable type %s is not assignable from %s", var.getType(), type)
@@ -59,7 +59,7 @@ public class UnsharedMutableContext extends BaseMutableContext<Variable> {
     }
 
     /** {@inheritDoc} */
-    @Override public Variable<?> getWritable(String name) {
+    @Override public Variable<?> getVariable(String name) {
         return getVariables().get(name);
     }
 

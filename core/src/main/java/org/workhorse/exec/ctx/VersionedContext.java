@@ -34,14 +34,14 @@ public interface VersionedContext extends MutableContext {
      * @param name The variable name
      * @return The variable
      */
-    @Override <V> VersionedVariable<V> getWritable(Class<V> type, String name);
+    @Override <V> VersionedVariable<V> getVariable(Class<V> type, String name);
 
     /**
      * Returns a writable variable from this context.
      * @param name The variable name
      * @return The variable
      */
-    @Override VersionedVariable<?> getWritable(String name);
+    @Override VersionedVariable<?> getVariable(String name);
 
     /**
      * Creates a versioned variable in this context.

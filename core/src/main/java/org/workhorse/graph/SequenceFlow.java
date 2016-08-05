@@ -17,17 +17,18 @@ package org.workhorse.graph;
 
 import org.workhorse.expr.Condition;
 
+import javax.annotation.Nullable;
+
 /**
- * The diagream element (represented as an edge between two vertices) that
- * is responsible for transitioning the {@link org.workhorse.exec.Execution}
+ * The diagram element (represented as an edge between two vertices) that
+ * indicates a transition for the {@link org.workhorse.exec.Execution}
  * from one node to the next.
  *
  * @author Brennan Spies
  */
 public class SequenceFlow {
 
-    private final Node source;
-    private final Node target;
+    private final Node source, target;
     //optional condition
     private Condition condition;
 
@@ -41,22 +42,43 @@ public class SequenceFlow {
         this.target = target;
     }
 
+    /**
+     * Sets a condition on the sequence flow.
+     * @param condition The condition
+     */
     public void setCondition(Condition condition) {
         this.condition = condition;
     }
 
+    /**
+     * Gets the condition (if present) on the sequence flow.
+     * @return The condition, or null
+     */
+    @Nullable
     public Condition getCondition() {
         return condition;
     }
 
+    /**
+     * Checks if condition is present.
+     * @return True if there is a condition
+     */
     public boolean hasCondition() {
         return condition != null;
     }
 
+    /**
+     * Gets the source of the sequence flow.
+     * @return The source node
+     */
     public Node getSource() {
         return source;
     }
 
+    /**
+     * Gets the target of the sequence flow.
+     * @return The target node
+     */
     public Node getTarget() {
         return target;
     }

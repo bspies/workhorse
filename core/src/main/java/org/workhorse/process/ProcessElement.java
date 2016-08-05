@@ -25,7 +25,7 @@ import java.util.UUID;
  *
  * @author Brennan Spies
  */
-public abstract class Element implements Identifiable<UUID>
+public abstract class ProcessElement implements Identifiable<UUID>
 {
     private UUID id;
 
@@ -33,7 +33,7 @@ public abstract class Element implements Identifiable<UUID>
      * Default constructor.
      * @param id The element's id
      */
-    public Element(UUID id) {
+    public ProcessElement(UUID id) {
         this.id = id;
     }
 

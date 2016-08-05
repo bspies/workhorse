@@ -17,7 +17,7 @@ package org.workhorse.activity;
 
 import org.workhorse.exec.ctx.MutableContext;
 import org.workhorse.exec.ctx.ReadValues;
-import org.workhorse.process.Element;
+import org.workhorse.process.ProcessElement;
 
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ import java.util.UUID;
  *
  * @author Brennan Spies
  */
-abstract class BaseAtomicActivity extends Element implements AtomicActivity
+abstract class BaseAtomicActivity extends ProcessElement implements AtomicActivity
 {
 	private String name, description;
 	private MutableContext context;

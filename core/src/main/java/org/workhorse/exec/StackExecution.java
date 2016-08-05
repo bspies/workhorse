@@ -21,7 +21,7 @@ import org.workhorse.exec.ctx.Context;
 import org.workhorse.graph.event.EventNode;
 import org.workhorse.graph.exec.ActivityNode;
 import org.workhorse.process.Container;
-import org.workhorse.process.Element;
+import org.workhorse.process.ProcessElement;
 import org.workhorse.process.Process;
 import org.workhorse.struct.ArrayStack;
 import org.workhorse.struct.Stack;
@@ -33,7 +33,7 @@ import java.util.UUID;
  *
  * @author Brennan Spies
  */
-public class StackExecution extends Element implements Execution {
+public class StackExecution extends ProcessElement implements Execution {
 
     private Stack<Contextual> callStack;
     private Process process;

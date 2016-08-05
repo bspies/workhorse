@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  *
  * @author Brennan Spies
  */
-abstract class BaseContainer extends Element implements Container {
+abstract class BaseContainer extends ProcessElement implements Container {
 
     private State state = State.READY;
     private String name, description;

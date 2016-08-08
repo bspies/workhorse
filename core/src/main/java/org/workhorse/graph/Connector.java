@@ -17,9 +17,9 @@ package org.workhorse.graph;
 
 /**
  * SInterface for a graph element that
- * connects two other elements. {@code Source}
- * and {@code Target} do not necessarily indicate
- * directionality.
+ * connects two other elements. Connector
+ * implementations are not necessarily
+ * directional.
  *
  * @author Brennan Spies
  */

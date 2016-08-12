@@ -34,6 +34,12 @@ public interface ProcessDiagram extends Diagram, Describable {
     Version getVersion();
 
     /**
+     * Adds a pool to the process diagram.
+     * @param pool The pool to add
+     */
+    void addPool(Pool pool);
+
+    /**
      * Returns all of the pools that belong to this
      * process diagram.
      * @return The participant pools

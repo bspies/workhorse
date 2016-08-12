@@ -15,9 +15,9 @@
  */
 package org.workhorse.graph;
 
-import org.workhorse.util.Version;
 import org.workhorse.exec.ctx.Context;
 import org.workhorse.expr.Condition;
+import org.workhorse.util.Version;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -89,6 +89,11 @@ public class WorkflowDiagram implements ProcessDiagram {
     }
 
     /** {@inheritDoc} */
+    @Override public void addPool(Pool pool) {
+        pools.add(pool);
+    }
+
+    /** {@inheritDoc} */
     @Override public boolean addNode(Node node) {
         return delegate.addNode(node);
     }
@@ -109,6 +114,11 @@ public class WorkflowDiagram implements ProcessDiagram {
     }
 
     /** {@inheritDoc} */
+    @Override public Collection<Pool> getPools() {
+        return pools;
+    }
+
+    /** {@inheritDoc} */
     @Override public Collection<SequenceFlow> getFlows() {
         return delegate.getFlows();
     }
@@ -126,10 +136,5 @@ public class WorkflowDiagram implements ProcessDiagram {
     /** {@inheritDoc} */
     @Override public Collection<SequenceFlow> getIncomingOf(Node node) {
         return delegate.getIncomingOf(node);
-    }
-
-    /** {@inheritDoc} */
-    @Override public Collection<Pool> getPools() {
-        return pools;
     }
 }

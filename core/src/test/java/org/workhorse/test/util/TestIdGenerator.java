@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.graph.builder;
+package org.workhorse.test.util;
 
-import org.workhorse.graph.Node;
-import org.workhorse.util.Builder;
+import org.workhorse.id.IdGenerator;
 
 /**
- * Builder nterface for {@link org.workhorse.graph.Node} instances.
+ * Test ID generator.
+ *
+ * @author Brennan Spies
  */
-public interface NodeBuilder<T extends Node> extends Builder<T> {
+public class TestIdGenerator implements IdGenerator<String> {
 
+    private long num = 0;
+
+    @Override
+    public String generate() {
+        return String.valueOf(++num);
+    }
 }

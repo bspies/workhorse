@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.graph.builder;
+package org.workhorse.graph.builder.actor;
 
-import org.workhorse.graph.exec.TaskNode;
+import org.workhorse.actor.User;
+import org.workhorse.graph.builder.BuilderContext;
 
 /**
- * Implementation of {@link NodeBuilder} for building {@link TaskNode} objects.
+ * Builder for {@link User} instances.
  *
  * @author Brennan Spies
  */
-public class TaskBuilder implements NodeBuilder<TaskNode> {
+public class UserBuilder extends BaseUserBuilder<User,UserBuilder> {
 
-    private TaskNode node;
+    /** {@inheritDoc} */
+    @Override public User build(BuilderContext ctx) {
+        setIdIfAbsent(ctx);
+        runValidation();
+        return new User(id, name);
+    }
 
-    /** Builds the task node */
-    @Override public TaskNode build() {
-        return null;
+    /** {@inheritDoc} */
+    @Override
+    public Class<User> getBuiltType() {
+        return User.class;
     }
 }

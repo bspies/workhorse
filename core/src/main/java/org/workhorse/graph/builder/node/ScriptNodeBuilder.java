@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.graph.builder;
+package org.workhorse.graph.builder.node;
 
+import org.workhorse.graph.builder.BuilderContext;
 import org.workhorse.graph.exec.ScriptNode;
 import org.workhorse.script.ScriptResource;
+import org.workhorse.validation.Required;
 
 /**
  * Implementation of {@link NodeBuilder} for building {@link ScriptNode}
@@ -24,16 +26,29 @@ import org.workhorse.script.ScriptResource;
  *
  * @author Brennan Spies
  */
-public class ScriptBuilder implements NodeBuilder<ScriptNode> {
+public class ScriptNodeBuilder extends ActivityNodeBuilder<ScriptNode,ScriptNodeBuilder> {
 
-    private ScriptNode node;
+    @Required private ScriptResource scriptResource;
 
-    ScriptBuilder(ScriptResource resource) {
+    public ScriptNodeBuilder(String name) {
+        withName(name);
+    }
 
+    public ScriptNodeBuilder withScript(ScriptResource resource) {
+        this.scriptResource = resource;
+        return this;
     }
 
     /** Builds the script node. */
-    @Override public ScriptNode build() {
-        return node;
+    @Override public ScriptNode build(BuilderContext ctx) {
+        setIdIfAbsent(ctx);
+        runValidation();
+        return new ScriptNode(getId(), ctx.getParent(), getLane(), scriptResource);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Class<ScriptNode> getBuiltType() {
+        return ScriptNode.class;
     }
 }

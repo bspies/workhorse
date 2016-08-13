@@ -46,7 +46,10 @@ public class TaskNodeBuilder extends ActivityNodeBuilder<TaskNode,TaskNodeBuilde
     @Override public TaskNode build(BuilderContext ctx) {
         setIdIfAbsent(ctx);
         runValidation();
-        return new TaskNode(getId(), ctx.getParent(), getLane());
+        TaskNode taskNode = new TaskNode(getId(), ctx.getParent(), getLane());
+        taskNode.setName(getName());
+        taskNode.setDescription(getDescription());
+        return taskNode;
     }
 
     /** {@inheritDoc} */

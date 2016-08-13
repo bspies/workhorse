@@ -29,7 +29,6 @@ import org.workhorse.validation.Required;
 public abstract class BaseUserBuilder<U extends User,B extends BaseUserBuilder<U,B>> extends BaseIdentifiableBuilder<U,B> {
 
     @Required protected Name name;
-    @Required protected String id;
 
     /**
      * Sets the user name.

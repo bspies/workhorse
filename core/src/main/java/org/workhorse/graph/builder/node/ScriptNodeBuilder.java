@@ -16,12 +16,13 @@
 package org.workhorse.graph.builder.node;
 
 import org.workhorse.graph.builder.BuilderContext;
+import org.workhorse.graph.builder.ContextualBuilder;
 import org.workhorse.graph.exec.ScriptNode;
 import org.workhorse.script.ScriptResource;
 import org.workhorse.validation.Required;
 
 /**
- * Implementation of {@link NodeBuilder} for building {@link ScriptNode}
+ * Implementation of {@link ContextualBuilder} for building {@link ScriptNode}
  * objects.
  *
  * @author Brennan Spies

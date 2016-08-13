@@ -20,7 +20,7 @@ import org.workhorse.graph.builder.BuilderContext;
 import org.workhorse.graph.exec.TaskNode;
 
 /**
- * Implementation of {@link NodeBuilder} for building {@link TaskNode} objects.
+ * Builder for {@link TaskNode} objects.
  *
  * @author Brennan Spies
  */

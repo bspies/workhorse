@@ -19,7 +19,6 @@ import org.workhorse.expr.Condition;
 import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
 import org.workhorse.graph.builder.container.DiagramBuilder;
-import org.workhorse.graph.builder.node.NodeBuilder;
 import org.workhorse.graph.builder.node.NodeReference;
 
 import java.util.Optional;
@@ -73,7 +72,7 @@ public class FlowBuilder<T extends Node> {
      * @param nodeBuilder The node builder
      * @return The new node builder
      */
-    public <N extends Node> FlowBuilder<N> withFlow(NodeBuilder<N> nodeBuilder) {
+    public <N extends Node> FlowBuilder<N> withFlow(ContextualBuilder<N> nodeBuilder) {
         parent.addNode(nodeBuilder);
         NodeReference<T> source = getNodeByBuilder(currentNode);
         NodeReference<N> target = getNodeByBuilder(nodeBuilder);
@@ -89,7 +88,7 @@ public class FlowBuilder<T extends Node> {
      * @param condition The flow condition
      * @return The new node builder
      */
-    public <N extends Node> FlowBuilder<N> withFlow(NodeBuilder<N> nodeBuilder, Condition condition) {
+    public <N extends Node> FlowBuilder<N> withFlow(ContextualBuilder<N> nodeBuilder, Condition condition) {
         parent.addNode(nodeBuilder);
         NodeReference<T> source = getNodeByBuilder(currentNode);
         NodeReference<N> target = getNodeByBuilder(nodeBuilder);

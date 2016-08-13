@@ -18,8 +18,6 @@ package org.workhorse.graph.builder;
 import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
 import org.workhorse.graph.builder.container.DiagramBuilder;
-import org.workhorse.graph.builder.container.ProcessDiagramBuilder;
-import org.workhorse.graph.builder.node.NodeBuilder;
 import org.workhorse.graph.builder.node.EventNodeBuilder;
 import org.workhorse.graph.event.StartNode;
 
@@ -72,7 +70,7 @@ public class PathBuilder {
      * @param startingNode The node builder
      * @return The builder
      */
-    public <N extends Node> FlowBuilder<N> withNode(NodeBuilder<N> startingNode) {
+    public <N extends Node> FlowBuilder<N> withNode(ContextualBuilder<N> startingNode) {
         parent.addNode(startingNode);
         return new FlowBuilder<>(parent, startingNode, lane);
     }

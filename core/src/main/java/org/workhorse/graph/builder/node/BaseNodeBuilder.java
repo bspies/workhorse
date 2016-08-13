@@ -19,36 +19,37 @@ import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
 import org.workhorse.graph.builder.BaseBuilder;
 import org.workhorse.graph.builder.BaseIdentifiableBuilder;
+import org.workhorse.graph.builder.ContextualBuilder;
 import org.workhorse.validation.Required;
 
 import java.util.function.Supplier;
 
 /**
- * Base implementation of {@link NodeBuilder}.
+ * Base implementation of a node builder.
  *
  * @author Brennan Spies
  */
 public abstract class BaseNodeBuilder<T extends Node, B extends BaseNodeBuilder<T,B>>
-        extends BaseIdentifiableBuilder<T,B> implements NodeBuilder<T> {
+        extends BaseIdentifiableBuilder<T,B> {
 
     @Required private String name;
     @Required private Lane lane;
     private String description;
 
     /** {@inheritDoc} */
-    @Override public B withName(String name) {
+    public B withName(String name) {
         this.name = name;
         return self();
     }
 
     /** {@inheritDoc} */
-    @Override public B withDescription(String description) {
+    public B withDescription(String description) {
         this.description = description;
         return self();
     }
 
     /** {@inheritDoc} */
-    @Override public B onLane(Lane lane) {
+    public B onLane(Lane lane) {
         this.lane = lane;
         return self();
     }

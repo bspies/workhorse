@@ -15,6 +15,8 @@
  */
 package org.workhorse.test.builder;
 
+import org.assertj.core.api.Condition;
+import org.assertj.core.condition.AllOf;
 import org.junit.Test;
 import org.workhorse.actor.Actor;
 import org.workhorse.actor.User;
@@ -82,6 +84,11 @@ public class BuilderTests {
 
         Node onlyNode = processDiagram.getNodes().iterator().next();
         assertThat(onlyNode).as("Node should be Task node").isInstanceOf(TaskNode.class);
+        assertThat(onlyNode.getName()).isEqualTo(taskName);
+        assertThat(onlyNode.getDescription()).isEqualTo(taskDesc);
+        assertThat(onlyNode.getLane()).as("Node lane should not be null").isNotNull();
+        assertThat(onlyNode.getLane().getRole()).as("Lane role should not be null").isNotNull();
+        assertThat(onlyNode.getLane().getRole().getName()).isNotNull();
     }
 
     /**
@@ -115,6 +122,14 @@ public class BuilderTests {
 
         assertThat(processDiagram).isNotNull();
         assertThat(processDiagram.getNodes()).hasSize(3);
+        processDiagram.getNodes()
+                .forEach(node -> {
+                    assertThat(node.getName())
+                        .as("Node name should not be null").isNotNull();
+                    assertThat(node.getLane())
+                        .as(String.format("Node %s has no lane", node)).isNotNull();
+                });
+
         Collection<Pool> pools = processDiagram.getPools();
         assertThat(pools).as("Should be exactly one Pool").hasSize(1);
 

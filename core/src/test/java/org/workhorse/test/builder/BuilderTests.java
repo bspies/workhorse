@@ -15,26 +15,26 @@
  */
 package org.workhorse.test.builder;
 
-import org.assertj.core.api.Condition;
-import org.assertj.core.condition.AllOf;
 import org.junit.Test;
+import org.workhorse.activity.Task;
 import org.workhorse.actor.Actor;
 import org.workhorse.actor.User;
 import org.workhorse.actor.UserGroup;
-import org.workhorse.graph.Lane;
-import org.workhorse.graph.Node;
-import org.workhorse.graph.Pool;
-import org.workhorse.graph.ProcessDiagram;
-import org.workhorse.graph.builder.container.ProcessDiagramBuilder;
+import org.workhorse.graph.*;
 import org.workhorse.graph.builder.actor.DepartmentBuilder;
 import org.workhorse.graph.builder.actor.RoleBuilder;
 import org.workhorse.graph.builder.actor.UserBuilder;
+import org.workhorse.graph.builder.container.ProcessDiagramBuilder;
 import org.workhorse.graph.builder.node.TaskNodeBuilder;
 import org.workhorse.graph.exec.TaskNode;
 import org.workhorse.test.util.TestIdGenerator;
 import org.workhorse.util.Version;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +49,8 @@ public class BuilderTests {
      * Test building a simple workflow with a single pool, a single lane, and
      * only one node in that lane.
      */
-    @Test public void testDiagramWithSingleUserRoleAndTask() {
+    @Test
+    public void testDiagramWithSingleUserRoleAndTask() {
 
         String roleName = "Applicant",
                taskName = "Complete form",
@@ -83,18 +84,47 @@ public class BuilderTests {
         assertThat(onlyLane.getRole().getName()).isEqualTo(roleName);
 
         Node onlyNode = processDiagram.getNodes().iterator().next();
-        assertThat(onlyNode).as("Node should be Task node").isInstanceOf(TaskNode.class);
-        assertThat(onlyNode.getName()).isEqualTo(taskName);
-        assertThat(onlyNode.getDescription()).isEqualTo(taskDesc);
-        assertThat(onlyNode.getLane()).as("Node lane should not be null").isNotNull();
-        assertThat(onlyNode.getLane().getRole()).as("Lane role should not be null").isNotNull();
-        assertThat(onlyNode.getLane().getRole().getName()).isNotNull();
+        assertNodeCorrect(onlyNode, TaskNode.class, taskName, taskDesc, onlyLane);
+    }
+
+    /**
+     * Test building a simple workflow with a single pool, a single lane, and multiple
+     * tasks connected by sequence flows.
+     */
+    @Test
+    public void testDiagramWithSingleUserRoleAndTaskSequence() {
+
+        String roleName = "Applicant",
+                taskName1 = "Complete form",
+                taskDesc1 = "Fill out form and turn it in",
+                taskName2 = "Hand in form",
+                taskDesc2 = "Hand in the form to form processor",
+                firstName = "Aaron",
+                lastName = "Wilde";
+
+        ProcessDiagram processDiagram = new ProcessDiagramBuilder(new TestIdGenerator())
+                .withProcessName("Test simple workflow")
+                .withVersion(Version.getDefault())
+                .withParticipant(new UserBuilder().withName(firstName, lastName))
+                    .inRole(new RoleBuilder(roleName), path ->
+                        path.withStart("Start")
+                            .withFlow(new TaskNodeBuilder(taskName1).withDescription(taskDesc1))
+                            .withFlow(new TaskNodeBuilder(taskName2).withDescription(taskDesc2))
+                    )
+                .build();
+
+        assertThat(processDiagram).isNotNull();
+        assertThat(processDiagram.getPools()).hasSize(1);
+        assertThat(processDiagram.getNodes()).hasSize(3);
+        assertThat(processDiagram.getFlows()).hasSize(2);
     }
 
     /**
      * Tests a diagram with multiple swim lanes and tasks, but no flows.
      */
-    @Test public void testDiagramWithUserMultipleRolesAndTasksNoFlows() {
+    @Test
+    public void testDiagramWithUserMultipleRolesAndTasksNoFlows() {
+
         String deptName = "Finance",
                roleName1 = "Team Assistant",
                roleName2 = "Invoice Approver",
@@ -105,6 +135,7 @@ public class BuilderTests {
                approveTaskDesc = "Approve or reject submitted invoice",
                transferTaskName = "Complete Bank Transfer",
                transferTaskDesc = "Transfer funds to recipient bank account";
+
         ProcessDiagram processDiagram = new ProcessDiagramBuilder(new TestIdGenerator())
                 .withProcessName("Test invoice workflow")
                 .withVersion(Version.getDefault())
@@ -122,13 +153,6 @@ public class BuilderTests {
 
         assertThat(processDiagram).isNotNull();
         assertThat(processDiagram.getNodes()).hasSize(3);
-        processDiagram.getNodes()
-                .forEach(node -> {
-                    assertThat(node.getName())
-                        .as("Node name should not be null").isNotNull();
-                    assertThat(node.getLane())
-                        .as(String.format("Node %s has no lane", node)).isNotNull();
-                });
 
         Collection<Pool> pools = processDiagram.getPools();
         assertThat(pools).as("Should be exactly one Pool").hasSize(1);
@@ -139,5 +163,45 @@ public class BuilderTests {
         assertThat(actor).as("Actor should be UserGroup").isInstanceOf(UserGroup.class);
         assertThat(actor.getDisplayName()).isEqualTo(deptName);
         assertThat(onlyPool.getLanes()).as("Should have exactly 3 Lanes").hasSize(3);
+
+        assertNodeCorrect(processDiagram, TaskNode.class, reviewTaskName, reviewTaskDesc,
+                getLaneByRoleName(processDiagram, roleName1));
+        assertNodeCorrect(processDiagram, TaskNode.class, approveTaskName, approveTaskDesc,
+                getLaneByRoleName(processDiagram, roleName2));
+        assertNodeCorrect(processDiagram, TaskNode.class, transferTaskName, transferTaskDesc,
+                getLaneByRoleName(processDiagram, roleName3));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // Internal helper methods
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    /** Asserts that node values are correct */
+    private void assertNodeCorrect(Node node, Class<? extends Node> type,
+                                   String name, String desc, Lane lane) {
+        assertThat(node).as("Node should not be null").isNotNull();
+        assertThat(node).as("Node type incorrect").isInstanceOf(type);
+        assertThat(node.getName()).as("Node name not correct").isEqualTo(name);
+        assertThat(node.getDescription()).as("Node description is not correct").isEqualTo(desc);
+        assertThat(node.getLane()).as("Node lane cannot be null").isNotNull();
+        assertThat(node.getLane()).as("Node has incorrect lane").isEqualTo(lane);
+    }
+
+    /** First finds the node with the given name, then asserts values are correct. */
+    private void assertNodeCorrect(Diagram diagram, Class<? extends Node> type,
+                                   String name, String desc, Lane lane) {
+        Optional<Node> nodeOptional = diagram.getNodes().stream().filter(n -> name.equals(n.getName())).findFirst();
+        assertThat(nodeOptional.isPresent()).as(String.format("Cannot find node with name '%s' in diagram", name)).isTrue();
+        assertNodeCorrect(nodeOptional.get(), type, name, desc, lane);
+    }
+
+    private Lane getLaneByRoleName(ProcessDiagram diagram, String roleName) {
+        return diagram.getPools()
+                .stream()
+                .map(Pool::getLanes)
+                .flatMap(Collection::stream)
+                .filter(lane -> roleName.equals(lane.getRole().getName()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError(String.format("Unable to find lane with role '%s'", roleName)));
     }
 }

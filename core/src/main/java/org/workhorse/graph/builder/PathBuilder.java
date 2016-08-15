@@ -19,6 +19,7 @@ import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
 import org.workhorse.graph.builder.container.DiagramBuilder;
 import org.workhorse.graph.builder.node.EventNodeBuilder;
+import org.workhorse.graph.builder.node.StartNodeBuilder;
 import org.workhorse.graph.event.StartNode;
 
 /**
@@ -63,9 +64,10 @@ public class PathBuilder {
      * @return The builder for the event node
      */
     public FlowBuilder<StartNode> withStart(String name) {
-        EventNodeBuilder<StartNode> enb = new EventNodeBuilder<>(name);
-        parent.addNode(enb);
-        return new FlowBuilder<>(parent, enb, lane);
+        StartNodeBuilder snb = new StartNodeBuilder(name);
+        snb.onLane(lane);
+        parent.addNode(snb);
+        return new FlowBuilder<>(parent, snb, lane);
     }
 
     /**

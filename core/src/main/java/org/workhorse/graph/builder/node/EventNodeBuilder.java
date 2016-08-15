@@ -23,19 +23,9 @@ import org.workhorse.graph.event.EventNode;
  *
  * @author Brennan Spies
  */
-public class EventNodeBuilder<E extends EventNode> extends BaseNodeBuilder<E,EventNodeBuilder<E>> {
+public abstract class EventNodeBuilder<E extends EventNode> extends BaseNodeBuilder<E,EventNodeBuilder<E>> {
 
     public EventNodeBuilder(String name) {
-    }
-
-    @Override public E build(BuilderContext ctx) {
-        setIdIfAbsent(() -> ctx.generateIdFor(EventNode.class));
-        runValidation();
-        return null;  //todo
-    }
-
-    @Override
-    public Class<E> getBuiltType() {
-        return null; //todo ?
+        withName(name);
     }
 }

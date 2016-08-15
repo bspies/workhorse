@@ -32,11 +32,11 @@ public class FlowBuilder<T extends Node> {
 
     private DiagramBuilder parent;
     private ContextualBuilder<T> currentNode;
-    private ContextualBuilder<Lane> currentLane;
+    private LaneReference currentLane;
 
     FlowBuilder(DiagramBuilder parent,
                 ContextualBuilder<T> currentNode,
-                ContextualBuilder<Lane> currentLane) {
+                LaneReference currentLane) {
         this.parent = parent;
         this.currentNode = currentNode;
         this.currentLane = currentLane;
@@ -73,6 +73,7 @@ public class FlowBuilder<T extends Node> {
      * @return The new node builder
      */
     public <N extends Node> FlowBuilder<N> withFlow(ContextualBuilder<N> nodeBuilder) {
+        setLaneOnNodeBuilder(nodeBuilder);
         parent.addNode(nodeBuilder);
         NodeReference<T> source = getNodeByBuilder(currentNode);
         NodeReference<N> target = getNodeByBuilder(nodeBuilder);
@@ -89,6 +90,7 @@ public class FlowBuilder<T extends Node> {
      * @return The new node builder
      */
     public <N extends Node> FlowBuilder<N> withFlow(ContextualBuilder<N> nodeBuilder, Condition condition) {
+        setLaneOnNodeBuilder(nodeBuilder);
         parent.addNode(nodeBuilder);
         NodeReference<T> source = getNodeByBuilder(currentNode);
         NodeReference<N> target = getNodeByBuilder(nodeBuilder);
@@ -99,6 +101,12 @@ public class FlowBuilder<T extends Node> {
     //////////////////////////////////////////////////////////////////////////////////
     // Helper methods
     //////////////////////////////////////////////////////////////////////////////////
+
+    private void setLaneOnNodeBuilder(ContextualBuilder<? extends Node> nodeBuilder) {
+        if(nodeBuilder instanceof LaneElementBuilder) {
+            ((LaneElementBuilder)nodeBuilder).onLane(currentLane);
+        }
+    }
 
     /**
      * Creates a builder edge between the node builder and a reference to the node
@@ -116,19 +124,13 @@ public class FlowBuilder<T extends Node> {
 
     /** Returns a reference to the node with the given id. */
     private NodeReference<Node> getNodeById(String id) {
-        return new NodeReference<>(context -> {
-            Optional<Node> optNode = context.getBuiltObjectById(Node.class, id);
-            if (optNode.isPresent()) {
-                return optNode.get();
-            } else {
-                throw new IllegalStateException("Unable to find node with id: " + id);
-            }
-        });
+        return new NodeReference<>(context -> context.getBuiltObjectById(Node.class, id)
+                .orElseThrow(() -> new IllegalStateException("Unable to find node with id: " + id)));
     }
 
     /** Returns a reference to the node represented by the given builder */
     private <N extends Node> NodeReference<N> getNodeByBuilder(ContextualBuilder<N> builder) {
-        return new NodeReference<N>(context -> context.getBuiltObject(builder)
+        return new NodeReference<>(context -> context.getBuiltObject(builder)
                 .orElseThrow(() -> new RuntimeException("Unable to create node reference to un-built object")));
     }
 }

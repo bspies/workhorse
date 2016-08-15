@@ -46,7 +46,7 @@ public class SubProcessNodeBuilder extends ActivityNodeBuilder<SubProcessNode,Su
      * @return The current builder
      */
     public SubProcessNodeBuilder withPath(VoidFunction<PathBuilder> pathFunction) {
-        pathFunction.apply(new PathBuilder(this, getLane()));
+        pathFunction.apply(new PathBuilder(this, getLaneReference()));
         return this;
     }
 
@@ -72,7 +72,7 @@ public class SubProcessNodeBuilder extends ActivityNodeBuilder<SubProcessNode,Su
         runValidation();
         Diagram parent = ctx.getParent();
         //build subprocess
-        SubProcessNode subProcessNode = new SubProcessNode(getId(), parent, getLane());
+        SubProcessNode subProcessNode = new SubProcessNode(getId(), parent, getLane(ctx));
         ctx.setParent(subProcessNode);
         builderState.getNodes().forEach(nodeBuilder -> subProcessNode.addNode(ctx.build(nodeBuilder)));
         builderState.getFlows().forEach(flowBuilder -> subProcessNode.addFlow(ctx.build(flowBuilder)));

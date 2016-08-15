@@ -17,12 +17,8 @@ package org.workhorse.graph.builder.node;
 
 import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
-import org.workhorse.graph.builder.BaseBuilder;
-import org.workhorse.graph.builder.BaseIdentifiableBuilder;
-import org.workhorse.graph.builder.ContextualBuilder;
+import org.workhorse.graph.builder.*;
 import org.workhorse.validation.Required;
-
-import java.util.function.Supplier;
 
 /**
  * Base implementation of a node builder.
@@ -30,32 +26,39 @@ import java.util.function.Supplier;
  * @author Brennan Spies
  */
 public abstract class BaseNodeBuilder<T extends Node, B extends BaseNodeBuilder<T,B>>
-        extends BaseIdentifiableBuilder<T,B> {
+        extends BaseIdentifiableBuilder<T,B> implements LaneElementBuilder<B> {
 
     @Required private String name;
-    @Required private Lane lane;
+    @Required private LaneReference laneReference;
     private String description;
 
-    /** {@inheritDoc} */
     public B withName(String name) {
         this.name = name;
         return self();
     }
 
-    /** {@inheritDoc} */
     public B withDescription(String description) {
         this.description = description;
         return self();
     }
 
-    /** {@inheritDoc} */
-    public B onLane(Lane lane) {
-        this.lane = lane;
+    @Override public B onLane(Lane lane) {
+        return onLane(new LaneReference(context -> lane));
+    }
+
+    @Override public B onLane(ContextualBuilder<Lane> laneBuilder) {
+        return onLane(new LaneReference(context -> context.getBuiltObject(laneBuilder)
+                .orElseThrow(() -> new IllegalStateException("Unable to find lane from builder"))));
+    }
+
+    @Override public B onLane(LaneReference laneRef) {
+        this.laneReference = laneRef;
         return self();
     }
 
     //protected accessors for subtype builders
     protected String getName() { return name; }
     protected String getDescription() { return  description; }
-    protected Lane getLane() { return lane; }
+    protected Lane getLane(BuilderContext ctx) { return laneReference.getLane(ctx); }
+    protected LaneReference getLaneReference() { return laneReference; }
 }

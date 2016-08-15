@@ -30,7 +30,7 @@ import org.workhorse.graph.event.StartNode;
 public class PathBuilder {
 
     private DiagramBuilder parent;
-    private ContextualBuilder<Lane> lane;
+    private LaneReference lane;
 
     /**
      * Creates the path builder with the
@@ -38,8 +38,9 @@ public class PathBuilder {
      * @param parent The parent builder
      * @param lane The swim lane
      */
-    public PathBuilder(DiagramBuilder parent, Lane lane) {
-        this(parent, ExistingObject.wrap(lane));
+    public PathBuilder(DiagramBuilder parent, LaneReference lane) {
+        this.parent = parent;
+        this.lane = lane;
     }
 
     /**
@@ -51,7 +52,9 @@ public class PathBuilder {
     public PathBuilder(DiagramBuilder parent,
                        ContextualBuilder<Lane> laneBuilder) {
         this.parent = parent;
-        this.lane = laneBuilder;
+        this.lane = new LaneReference(context ->
+                context.getBuiltObject(laneBuilder)
+                        .orElseThrow(() -> new IllegalStateException("Cannot find lane by its lane builder")));
     }
 
     /**
@@ -71,6 +74,9 @@ public class PathBuilder {
      * @return The builder
      */
     public <N extends Node> FlowBuilder<N> withNode(ContextualBuilder<N> startingNode) {
+        if(startingNode instanceof LaneElementBuilder) {
+            ((LaneElementBuilder)startingNode).onLane(lane);
+        }
         parent.addNode(startingNode);
         return new FlowBuilder<>(parent, startingNode, lane);
     }

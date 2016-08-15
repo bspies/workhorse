@@ -44,7 +44,7 @@ public class ScriptNodeBuilder extends ActivityNodeBuilder<ScriptNode,ScriptNode
     @Override public ScriptNode build(BuilderContext ctx) {
         setIdIfAbsent(ctx);
         runValidation();
-        return new ScriptNode(getId(), ctx.getParent(), getLane(), scriptResource);
+        return new ScriptNode(getId(), ctx.getParent(), getLane(ctx), scriptResource);
     }
 
     /** {@inheritDoc} */

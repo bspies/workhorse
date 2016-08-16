@@ -16,7 +16,6 @@
 package org.workhorse.test.builder;
 
 import org.junit.Test;
-import org.workhorse.activity.Task;
 import org.workhorse.actor.Actor;
 import org.workhorse.actor.User;
 import org.workhorse.actor.UserGroup;
@@ -30,11 +29,8 @@ import org.workhorse.graph.exec.TaskNode;
 import org.workhorse.test.util.TestIdGenerator;
 import org.workhorse.util.Version;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -191,8 +187,7 @@ public class BuilderTests {
     private void assertNodeCorrect(Diagram diagram, Class<? extends Node> type,
                                    String name, String desc, Lane lane) {
         Optional<Node> nodeOptional = diagram.getNodes().stream().filter(n -> name.equals(n.getName())).findFirst();
-        assertThat(nodeOptional.isPresent()).as(String.format("Cannot find node with name '%s' in diagram", name)).isTrue();
-        assertNodeCorrect(nodeOptional.get(), type, name, desc, lane);
+        assertNodeCorrect(nodeOptional.orElseThrow(() -> new AssertionError(String.format("Cannot find node with name '%s' in diagram", name))), type, name, desc, lane);
     }
 
     private Lane getLaneByRoleName(ProcessDiagram diagram, String roleName) {

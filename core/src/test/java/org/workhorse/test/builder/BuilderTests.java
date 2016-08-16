@@ -64,11 +64,10 @@ public class BuilderTests {
                 .build();
 
         assertThat(processDiagram).isNotNull();
-        assertThat(processDiagram.getNodes()).hasSize(1);
-        Collection<Pool> pools = processDiagram.getPools();
-        assertThat(pools).as("Should be exactly one Pool").hasSize(1);
+        assertThat(processDiagram.getPools()).as("Diagram should have 1 pool").hasSize(1);
+        assertThat(processDiagram.getNodes()).as("Diagram should have 1 node").hasSize(1);
 
-        Pool onlyPool = pools.iterator().next();
+        Pool onlyPool = processDiagram.getPools().iterator().next();
         Actor actor = onlyPool.getParticipant();
         assertThat(actor).isNotNull();
         assertThat(actor).as("Actor should be User").isInstanceOf(User.class);
@@ -91,12 +90,12 @@ public class BuilderTests {
     public void testDiagramWithSingleUserRoleAndTaskSequence() {
 
         String roleName = "Applicant",
-                taskName1 = "Complete form",
-                taskDesc1 = "Fill out form and turn it in",
-                taskName2 = "Hand in form",
-                taskDesc2 = "Hand in the form to form processor",
-                firstName = "Aaron",
-                lastName = "Wilde";
+               taskName1 = "Complete form",
+               taskDesc1 = "Fill out form and turn it in",
+               taskName2 = "Hand in form",
+               taskDesc2 = "Hand in the form to form processor",
+               firstName = "Aaron",
+               lastName = "Wilde";
 
         ProcessDiagram processDiagram = new ProcessDiagramBuilder(new TestIdGenerator())
                 .withProcessName("Test simple workflow")
@@ -110,9 +109,20 @@ public class BuilderTests {
                 .build();
 
         assertThat(processDiagram).isNotNull();
-        assertThat(processDiagram.getPools()).hasSize(1);
-        assertThat(processDiagram.getNodes()).hasSize(3);
-        assertThat(processDiagram.getFlows()).hasSize(2);
+        assertThat(processDiagram.getPools()).as("Diagram should have 1 pool").hasSize(1);
+        assertThat(processDiagram.getNodes()).as("Diagram should have 3 nodes").hasSize(3);
+        assertThat(processDiagram.getFlows()).as("Diagram should have 2 sequence flows").hasSize(2);
+
+        Pool onlyPool = processDiagram.getPools().iterator().next();
+        Actor actor = onlyPool.getParticipant();
+        assertThat(actor).isNotNull();
+        assertThat(actor).as("Actor should be User").isInstanceOf(User.class);
+        assertThat(actor.getDisplayName()).contains(firstName, lastName);
+        assertThat(onlyPool.getLanes()).as("Should have exactly one Lane").hasSize(1);
+
+        Lane onlyLane = onlyPool.getLanes().iterator().next();
+        assertThat(onlyLane.getRole()).isNotNull();
+        assertThat(onlyLane.getRole().getName()).isEqualTo(roleName);
     }
 
     /**

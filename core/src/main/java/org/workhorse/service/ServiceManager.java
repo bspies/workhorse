@@ -16,6 +16,7 @@
 package org.workhorse.service;
 
 import org.workhorse.util.Attribute;
+import org.workhorse.util.NonUniqueResultException;
 
 /**
  * An interface for managing process services. Multiple services per
@@ -25,10 +26,15 @@ import org.workhorse.util.Attribute;
  * @author Brennan Spies
  */
 public interface ServiceManager {
+
     /**
-     *
+     * Gets a service of the given type with the given attributes. If no
+     * attributes are provided, this method will return a registered service
+     * with any attributes.
      * @param serviceType The service type
+     * @param attributes The service attributes to match
      * @return The service instance
+     * @throws NonUniqueResultException If attributes match more than one service
      */
     <S> S getService(Class<S> serviceType, Attribute<?>... attributes);
 }

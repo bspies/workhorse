@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.dependency.guice;
-
-import com.google.inject.AbstractModule;
-import org.workhorse.script.JvmScriptRunner;
-import org.workhorse.script.ScriptRunner;
-import org.workhorse.service.ServiceManager;
-import org.workhorse.service.StandardServiceManager;
+package org.workhorse.util;
 
 /**
- * Configuration of core service functionality for the
- * {@link org.workhorse.dependency.GuiceDependencyManager}.
+ * Exception thrown when a search/query that expects
+ * a unique result finds more than one.
+ *
+ * @author Brennan Spies
  */
-public class ServiceConfiguration extends AbstractModule {
-
-    @Override
-    protected void configure() {
-        bind(ServiceManager.class).to(StandardServiceManager.class);
-        bind(ScriptRunner.class).to(JvmScriptRunner.class);
+public class NonUniqueResultException extends RuntimeException {
+    /**
+     * Creates exception with a message.
+     * @param message The exception message
+     */
+    public NonUniqueResultException(String message) {
+        super(message);
     }
 }

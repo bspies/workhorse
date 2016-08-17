@@ -16,19 +16,24 @@
 package org.workhorse.dependency.guice;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
 import org.workhorse.activity.Activity;
 import org.workhorse.activity.HumanTask;
 import org.workhorse.activity.Script;
 import org.workhorse.activity.Task;
-import org.workhorse.activity.factory.CreateActivity;
 import org.workhorse.activity.factory.ActivityFactory;
+import org.workhorse.activity.factory.CreateActivity;
 import org.workhorse.activity.factory.DefaultActivityFactory;
+import org.workhorse.exec.ExecutionFactory;
+import org.workhorse.exec.StackExecution;
 import org.workhorse.exec.ctx.VersionedContext;
 import org.workhorse.graph.exec.ScriptNode;
+import org.workhorse.id.Id;
 import org.workhorse.id.IdGenerator;
 import org.workhorse.id.InstanceIdGenerator;
 import org.workhorse.process.*;
+import org.workhorse.process.ProcessEnvironment;
 import org.workhorse.runtime.Engine;
 import org.workhorse.runtime.WorkflowEngine;
 
@@ -56,8 +61,14 @@ public class CoreConfiguration extends AbstractModule {
         bind(ExecutorService.class).toInstance(Executors.newCachedThreadPool());
         bind(Environment.class).to(ProcessEnvironment.class).asEagerSingleton();
         bind(ProcessFactory.class).to(WorkflowProcess.Factory.class);
+        bind(ExecutionFactory.class).to(StackExecution.Factory.class);
         bind(ActivityFactory.class).to(DefaultActivityFactory.class);
         bind(DefaultActivityFactory.FunctionMap.class).toProvider(FunctionMapProvider.class);
+    }
+
+    @Provides @Id
+    private UUID generate(IdGenerator<UUID> generator) {
+        return generator.generate();
     }
 
     /** Maps the activity subtypes to creation functions for them. */

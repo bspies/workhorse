@@ -15,12 +15,14 @@
  */
 package org.workhorse.process;
 
-import org.workhorse.util.Version;
 import org.workhorse.exec.Continuation;
 import org.workhorse.exec.Execution;
+import org.workhorse.exec.ExecutionFactory;
 import org.workhorse.exec.RunResult;
-import org.workhorse.exec.StackExecution;
-import org.workhorse.exec.ctx.*;
+import org.workhorse.exec.ctx.Context;
+import org.workhorse.exec.ctx.ReadOnlyContext;
+import org.workhorse.exec.ctx.ReadValues;
+import org.workhorse.exec.ctx.VersionedContext;
 import org.workhorse.flow.Controller;
 import org.workhorse.flow.ExecutionController;
 import org.workhorse.graph.Node;
@@ -28,6 +30,7 @@ import org.workhorse.graph.ProcessDiagram;
 import org.workhorse.id.IdGenerator;
 import org.workhorse.service.ServiceManager;
 import org.workhorse.type.val.Value;
+import org.workhorse.util.Version;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -60,7 +63,6 @@ public class WorkflowProcess extends BaseContainer implements Process {
      * @param diagram The process diagram
      * @param env The process environment
      */
-    @Inject
     public WorkflowProcess(UUID id, ProcessDiagram diagram, Environment env) {
         super(id);
         this.diagram = diagram;
@@ -88,8 +90,9 @@ public class WorkflowProcess extends BaseContainer implements Process {
     @Override public void start() {
         setState(State.RUNNING);
         ExecutorService executorService = getDependency(ExecutorService.class);
+        ExecutionFactory execFactory = getDependency(ExecutionFactory.class);
         diagram.getStartingNodes().forEach(node -> {
-            Execution execution = new StackExecution(null /* todo id gen */, this);
+            Execution execution = execFactory.create(this);
             Future<?> future = executorService.submit(new ExecutionRunner(node, execution));
             runningExecutions.put(execution.getId(), new ExecutionTracker(execution, future));
         });

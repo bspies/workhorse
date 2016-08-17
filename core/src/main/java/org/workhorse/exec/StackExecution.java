@@ -20,12 +20,14 @@ import org.workhorse.activity.factory.ActivityFactory;
 import org.workhorse.exec.ctx.Context;
 import org.workhorse.graph.event.EventNode;
 import org.workhorse.graph.exec.ActivityNode;
+import org.workhorse.id.IdGenerator;
 import org.workhorse.process.Container;
-import org.workhorse.process.ProcessElement;
 import org.workhorse.process.Process;
+import org.workhorse.process.ProcessElement;
 import org.workhorse.struct.ArrayStack;
 import org.workhorse.struct.Stack;
 
+import javax.inject.Inject;
 import java.util.UUID;
 
 /**
@@ -103,5 +105,22 @@ public class StackExecution extends ProcessElement implements Execution {
                 return (Container)callStack.peek(i);
         }
         throw new IllegalStateException("Unable to find " + Container.class.getName() + " on call stack");
+    }
+
+    /**
+     * Helper factory for creating stack execution instances.
+     */
+    public static class Factory implements ExecutionFactory {
+
+        private IdGenerator<UUID> idGenerator;
+
+        @Inject
+        public Factory(IdGenerator<UUID> idGenerator) {
+            this.idGenerator = idGenerator;
+        }
+
+        @Override public Execution create(Process process) {
+            return new StackExecution(idGenerator.generate(), process);
+        }
     }
 }

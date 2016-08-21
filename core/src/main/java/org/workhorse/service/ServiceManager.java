@@ -18,6 +18,9 @@ package org.workhorse.service;
 import org.workhorse.util.Attribute;
 import org.workhorse.util.NonUniqueResultException;
 
+import java.util.Collection;
+import java.util.Optional;
+
 /**
  * An interface for managing process services. Multiple services per
  * service interface is allowed as long as the services are distinguished
@@ -31,10 +34,17 @@ public interface ServiceManager {
      * Gets a service of the given type with the given attributes. If no
      * attributes are provided, this method will return a registered service
      * with any attributes.
-     * @param serviceType The service type
+     * @param serviceType The registered service type
      * @param attributes The service attributes to match
-     * @return The service instance
+     * @return The optional service instance
      * @throws NonUniqueResultException If attributes match more than one service
      */
-    <S> S getService(Class<S> serviceType, Attribute<?>... attributes);
+    <S> Optional<S> getService(Class<S> serviceType, Attribute<?>... attributes);
+
+    /**
+     * Gets all services of the given type.
+     * @param serviceType The registered service type
+     * @return The services
+     */
+    <S> Collection<S> getServices(Class<S> serviceType);
 }

@@ -19,10 +19,10 @@ import org.workhorse.exec.Execution;
 import org.workhorse.exec.RunResult;
 import org.workhorse.exec.RunState;
 import org.workhorse.graph.Diagram;
-import org.workhorse.graph.SequenceFlow;
-import org.workhorse.graph.exec.ActivityNode;
-import org.workhorse.graph.event.EventNode;
 import org.workhorse.graph.Node;
+import org.workhorse.graph.SequenceFlow;
+import org.workhorse.graph.event.EventNode;
+import org.workhorse.graph.exec.ActivityNode;
 
 import java.util.Collection;
 

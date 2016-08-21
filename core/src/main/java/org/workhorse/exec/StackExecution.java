@@ -68,7 +68,7 @@ public class StackExecution extends ProcessElement implements Execution {
         RunState state;
         try {
             //create Activity
-            ActivityFactory factory = getProcess().getService(ActivityFactory.class); //todo dependency instead?
+            ActivityFactory factory = getProcess().getDependency(ActivityFactory.class);
             T activity = factory.createActivity(node, getCurrentContext());
             callStack.push(activity);
             state = activity.perform(this);
@@ -87,7 +87,7 @@ public class StackExecution extends ProcessElement implements Execution {
     /** {@inheritDoc} */
     @Override public RunState visit(EventNode node) {
         //todo generate and throw event
-        return null;
+        return RunState.RUNNING;
     }
 
     /** {@inheritDoc} */

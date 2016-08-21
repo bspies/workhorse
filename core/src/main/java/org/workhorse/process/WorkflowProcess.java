@@ -15,6 +15,7 @@
  */
 package org.workhorse.process;
 
+import com.google.common.base.Joiner;
 import org.workhorse.exec.Continuation;
 import org.workhorse.exec.Execution;
 import org.workhorse.exec.ExecutionFactory;
@@ -123,8 +124,8 @@ public class WorkflowProcess extends BaseContainer implements Process {
     }
 
     /** {@inheritDoc} */
-    @Override public <T> T getService(Class<T> serviceType) {
-        return serviceManager.getService(serviceType);
+    @Override public ServiceManager getServiceManager() {
+        return serviceManager;
     }
 
     /*============================================================================
@@ -136,7 +137,8 @@ public class WorkflowProcess extends BaseContainer implements Process {
      * @param type The dependency type
      * @return The instance
      */
-    private <T> T getDependency(Class<T> type) {
+    @Override
+    public <T> T getDependency(Class<T> type) {
         return environment.getDependencyManager().getInstance(type);
     }
 

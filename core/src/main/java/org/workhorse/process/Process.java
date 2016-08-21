@@ -17,6 +17,7 @@ package org.workhorse.process;
 
 import org.workhorse.Cancellable;
 import org.workhorse.Recordable;
+import org.workhorse.service.ServiceManager;
 import org.workhorse.util.Version;
 
 /**
@@ -45,9 +46,17 @@ public interface Process extends Container, Cancellable, Recordable {
     Version getVersion();
 
     /**
-     * Gets the service for the given service type.
-     * @param serviceType The service type
-     * @return The service instance
+     * Resolves the dependency implementation of the given type.
+     * @param dependencyType The dependency type
+     * @return The dependency
+     * @see org.workhorse.dependency.DependencyManager
      */
-    <T> T getService(Class<T> serviceType);
+    <T> T getDependency(Class<T> dependencyType);
+
+    /**
+     * Returns the service manager, which can be used to
+     * look up process services.
+     * @return The service manager
+     */
+    ServiceManager getServiceManager();
 }

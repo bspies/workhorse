@@ -16,10 +16,13 @@
 package org.workhorse.dependency.guice;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import org.workhorse.script.JvmScriptRunner;
 import org.workhorse.script.ScriptRunner;
 import org.workhorse.service.ServiceManager;
 import org.workhorse.service.StandardServiceManager;
+
+import javax.script.ScriptEngine;
 
 /**
  * Configuration of core service functionality for the
@@ -29,7 +32,13 @@ public class ServiceConfiguration extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(ServiceManager.class).to(StandardServiceManager.class);
-        bind(ScriptRunner.class).to(JvmScriptRunner.class);
+
+    }
+
+    @Provides
+    public ServiceManager createServiceManager() {
+        return StandardServiceManager.builder()
+                .withService(ScriptRunner.class, new JvmScriptRunner())
+                .build();
     }
 }

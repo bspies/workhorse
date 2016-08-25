@@ -15,7 +15,7 @@
  */
 package org.workhorse.process;
 
-import com.google.common.base.Joiner;
+import org.workhorse.dependency.DependencyManager;
 import org.workhorse.exec.Continuation;
 import org.workhorse.exec.Execution;
 import org.workhorse.exec.ExecutionFactory;
@@ -48,14 +48,15 @@ import java.util.concurrent.Future;
  */
 public class WorkflowProcess extends BaseContainer implements Process {
 
-    private ProcessDiagram diagram;
-    private Environment environment;
-    private ServiceManager serviceManager;
-    private ConcurrentMap<UUID,ExecutionTracker> runningExecutions;
-    private ConcurrentMap<UUID,Execution> pausedExecutions;
+    private final ProcessDiagram diagram;
+    private final DependencyManager dependencyManager;
+    private final ServiceManager serviceManager;
+    private final ExecutorService executorService;
+    private final ConcurrentMap<UUID,ExecutionTracker> runningExecutions;
+    private final ConcurrentMap<UUID,Execution> pausedExecutions;
     private LocalDateTime creationDate, completionDate;
-    private Version version;
-    private VersionedContext context;
+    private final VersionedContext context;
+    private final Version version;
 
     /**
      * The default constructor.
@@ -67,9 +68,10 @@ public class WorkflowProcess extends BaseContainer implements Process {
     public WorkflowProcess(UUID id, ProcessDiagram diagram, Environment env) {
         super(id);
         this.diagram = diagram;
-        this.environment = env;
         this.version = diagram.getVersion();
         this.context = initContext(env.getInitialValues());
+        this.dependencyManager = env.getDependencyManager();
+        this.executorService = getDependency(ExecutorService.class);
         this.serviceManager = getDependency(ServiceManager.class);
         runningExecutions = new ConcurrentHashMap<>();
         pausedExecutions = new ConcurrentHashMap<>();
@@ -90,7 +92,6 @@ public class WorkflowProcess extends BaseContainer implements Process {
     /** {@inheritDoc} */
     @Override public void start() {
         setState(State.RUNNING);
-        ExecutorService executorService = getDependency(ExecutorService.class);
         ExecutionFactory execFactory = getDependency(ExecutionFactory.class);
         diagram.getStartingNodes().forEach(node -> {
             Execution execution = execFactory.create(this);
@@ -128,19 +129,18 @@ public class WorkflowProcess extends BaseContainer implements Process {
         return serviceManager;
     }
 
-    /*============================================================================
-     * Private methods and inner classes
-     *===========================================================================*/
-
     /**
      * Gets the dependency by its type.
      * @param type The dependency type
      * @return The instance
      */
-    @Override
-    public <T> T getDependency(Class<T> type) {
-        return environment.getDependencyManager().getInstance(type);
+    @Override public <T> T getDependency(Class<T> type) {
+        return dependencyManager.getInstance(type);
     }
+
+    /*============================================================================
+     * Helper methods and inner classes
+     *===========================================================================*/
 
     /**
      * Creates the process context with the initial values.
@@ -183,7 +183,7 @@ public class WorkflowProcess extends BaseContainer implements Process {
     /**
      * {@link Runnable} implementation for running {@link Execution} instances.
      */
-    private class ExecutionRunner implements Runnable {
+    private final class ExecutionRunner implements Runnable {
 
         private final Node node;
         private final Execution execution;

@@ -15,6 +15,7 @@
  */
 package org.workhorse.graph.exec;
 
+import com.google.common.collect.Iterables;
 import org.workhorse.activity.Activity;
 import org.workhorse.event.EventType;
 import org.workhorse.event.ThrownEvent;
@@ -24,10 +25,7 @@ import org.workhorse.graph.Diagram;
 import org.workhorse.graph.Lane;
 import org.workhorse.type.Parameter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Base class for all nodes in a graph that represent workflow activities.
@@ -36,7 +34,7 @@ import java.util.Set;
  */
 public abstract class ActivityNode<T extends Activity> extends BaseNode {
 
-    private Set<Parameter<?>> inputSet, outputSet;
+    private Map<String,Parameter<?>> inputSet, outputSet;
     private CatcherMap catchers;
 
     /**
@@ -49,8 +47,8 @@ public abstract class ActivityNode<T extends Activity> extends BaseNode {
      */
     protected ActivityNode(String id, Diagram diagram, Lane lane) {
         super(id, diagram, lane);
-        inputSet = new HashSet<>();
-        outputSet = new HashSet<>();
+        inputSet = new HashMap<>();
+        outputSet = new HashMap<>();
     }
 
     /**
@@ -76,8 +74,23 @@ public abstract class ActivityNode<T extends Activity> extends BaseNode {
      * variables in the activity's context.
      * @return The input set of parameters
      */
-    public Set<Parameter<?>> getInputSet() {
-        return inputSet;
+    public Collection<Parameter<?>> getInputSet() {
+        return Collections.unmodifiableCollection(inputSet.values());
+    }
+
+    /**
+     * Adds the input parameter to the activity node. Argument must not
+     * represent a duplicate parameter, i.e. have the same name as an existing
+     * input parameter.
+     * @param inputParam The input parameter
+     * @throws IllegalArgumentException If a duplicate name is found
+     */
+    public void addInput(Parameter<?> inputParam) {
+        if(inputSet.containsKey(inputParam.getName())) {
+            throw new IllegalArgumentException("Cannot add input parameter with duplicate name: "
+                    + inputParam.getName());
+        }
+        inputSet.put(inputParam.getName(), inputParam);
     }
 
     /**
@@ -87,8 +100,22 @@ public abstract class ActivityNode<T extends Activity> extends BaseNode {
      * context.
      * @return The output set of parameters
      */
-    public Set<Parameter<?>> getOutputSet() {
-        return outputSet;
+    public Collection<Parameter<?>> getOutputSet() {
+        return Collections.unmodifiableCollection(outputSet.values());
+    }
+
+    /**
+     * Adds the output parameter to the activity node. Argument must not
+     * represent a duplicate parameter, i.e. have the same name as an existing
+     * output parameter.
+     * @param outputParam The output parameter
+     * @throws IllegalArgumentException If a duplicate name is found
+     */
+    public void addOutput(Parameter<?> outputParam) {
+        if(outputSet.containsKey(outputParam.getName())) {
+            throw new IllegalArgumentException("Cannot add output parameter with duplicate name: "
+                    + outputParam.getName());
+        }
     }
 
     /**
@@ -96,8 +123,9 @@ public abstract class ActivityNode<T extends Activity> extends BaseNode {
      * @param catcher The handler to set
      */
     public void setCatcher(Catcher<? extends ThrownEvent<?>> catcher) {
-        if(catchers==null)
+        if(catchers==null) {
             catchers = new CatcherMap();
+        }
         catchers.put(catcher);
     }
 

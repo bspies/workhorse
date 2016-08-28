@@ -27,6 +27,7 @@ import org.workhorse.graph.builder.container.ProcessDiagramBuilder;
 import org.workhorse.graph.builder.node.TaskNodeBuilder;
 import org.workhorse.graph.exec.TaskNode;
 import org.workhorse.test.util.TestIdGenerator;
+import org.workhorse.type.Parameter;
 import org.workhorse.util.Version;
 
 import java.util.Collection;
@@ -59,7 +60,10 @@ public class BuilderTests {
                 .withVersion(Version.getDefault())
                 .withParticipant(new UserBuilder().withName(firstName, lastName))
                     .inRole(new RoleBuilder(roleName), path -> path.withNode(
-                        new TaskNodeBuilder(taskName).withDescription(taskDesc)
+                        new TaskNodeBuilder(taskName)
+                                .withDescription(taskDesc)
+                                .withInput(Parameter.of("foo", ctx -> ctx.getValue("foo").getValue()))
+                                .withOutput(Parameter.of("bar", ctx -> ctx.getValue("bar").getValue()))
                     ))
                 .build();
 
@@ -80,6 +84,9 @@ public class BuilderTests {
 
         Node onlyNode = processDiagram.getNodes().iterator().next();
         assertNodeCorrect(onlyNode, TaskNode.class, taskName, taskDesc, onlyLane);
+        TaskNode taskNode = (TaskNode)onlyNode;
+        assertThat(taskNode.getInputSet()).as("Task node should have exactly 1 input parameter").hasSize(1);
+        assertThat(taskNode.getOutputSet()).as("Task node should have exactly 1 output parameter").hasSize(1);
     }
 
     /**

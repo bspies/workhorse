@@ -15,8 +15,13 @@
  */
 package org.workhorse.graph.builder.node;
 
-import org.workhorse.event.Event;
+import org.workhorse.activity.Activity;
 import org.workhorse.graph.exec.ActivityNode;
+import org.workhorse.type.Parameter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Base builder for activity nodes.
@@ -26,12 +31,29 @@ import org.workhorse.graph.exec.ActivityNode;
 public abstract class ActivityNodeBuilder<N extends ActivityNode,B extends ActivityNodeBuilder<N,B>>
         extends BaseNodeBuilder<N,B> {
 
-    /**
-     *
-     * @return
-     */
-    public B withAttachedEvent(Event event) {
-        //todo
+    private Collection<Parameter<?>> inputParams = new ArrayList<>(),
+                                     outputParams = new ArrayList<>();
+
+    public B withInput(Parameter<?>... params) {
+        inputParams.addAll(Arrays.asList(params));
         return self();
+    }
+
+    public B withOutput(Parameter<?>... params) {
+        outputParams.addAll(Arrays.asList(params));
+        return self();
+    }
+
+/*    public B withAttachedEvent(Event event) {
+        return self();
+    }*/
+
+    /**
+     * Adds the input and output parameters to the activity node.
+     * @param activityNode The activity node
+     */
+    protected void addParameters(ActivityNode<? extends Activity> activityNode) {
+        inputParams.forEach(activityNode::addInput);
+        outputParams.forEach(activityNode::addOutput);
     }
 }

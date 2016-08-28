@@ -78,6 +78,7 @@ public class SubProcessNodeBuilder extends ActivityNodeBuilder<SubProcessNode,Su
         builderState.getFlows().forEach(flowBuilder -> subProcessNode.addFlow(ctx.build(flowBuilder)));
         //reset parent
         ctx.setParent(parent);
+        addParameters(subProcessNode);
         return subProcessNode;
     }
 

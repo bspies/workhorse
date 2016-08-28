@@ -116,6 +116,7 @@ public abstract class ActivityNode<T extends Activity> extends BaseNode {
             throw new IllegalArgumentException("Cannot add output parameter with duplicate name: "
                     + outputParam.getName());
         }
+        outputSet.put(outputParam.getName(), outputParam);
     }
 
     /**

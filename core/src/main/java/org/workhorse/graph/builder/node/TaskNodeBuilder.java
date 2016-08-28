@@ -49,6 +49,7 @@ public class TaskNodeBuilder extends ActivityNodeBuilder<TaskNode,TaskNodeBuilde
         TaskNode taskNode = new TaskNode(getId(), ctx.getParent(), getLane(ctx));
         taskNode.setName(getName());
         taskNode.setDescription(getDescription());
+        addParameters(taskNode);
         return taskNode;
     }
 

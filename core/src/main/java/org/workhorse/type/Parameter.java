@@ -15,12 +15,14 @@
  */
 package org.workhorse.type;
 
+import org.workhorse.exec.Execution;
 import org.workhorse.exec.ctx.Context;
 import org.workhorse.expr.Expression;
 import org.workhorse.type.constraint.Constraint;
 import org.workhorse.type.constraint.ConstraintViolation;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Represents an input or output parameter.
@@ -41,6 +43,16 @@ public class Parameter<V> {
     public Parameter(String name, Expression<V> expression) {
         this.expression = expression;
         this.name = name;
+    }
+
+    /**
+     * Factory method to create a parameter.
+     * @param name The parameter name
+     * @param expr The parameter expression
+     * @return The parameter
+     */
+    public static <T> Parameter<T> of(String name, Expression<T> expr) {
+        return new Parameter<>(name, expr);
     }
 
     /**

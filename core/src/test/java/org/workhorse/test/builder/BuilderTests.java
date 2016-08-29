@@ -136,7 +136,7 @@ public class BuilderTests {
      * Tests a diagram with multiple swim lanes and tasks, but no flows.
      */
     @Test
-    public void testDiagramWithUserMultipleRolesAndTasksNoFlows() {
+    public void testDiagramWithUserMultipleRolesAndTasks() {
 
         String deptName = "Finance",
                roleName1 = "Team Assistant",
@@ -153,19 +153,28 @@ public class BuilderTests {
                 .withProcessName("Test invoice workflow")
                 .withVersion(Version.getDefault())
                 .withParticipant(new DepartmentBuilder().withName(deptName))
-                    .inRole(new RoleBuilder(roleName1), path -> path.withNode(
-                        new TaskNodeBuilder(reviewTaskName).withDescription(reviewTaskDesc)
-                    ))
-                    .inRole(new RoleBuilder(roleName2), path -> path.withNode(
-                        new TaskNodeBuilder(approveTaskName).withDescription(approveTaskDesc)
-                    ))
-                    .inRole(new RoleBuilder(roleName3), path -> path.withNode(
-                        new TaskNodeBuilder(transferTaskName).withDescription(transferTaskDesc)
-                    ))
+                    .inRole(new RoleBuilder(roleName1), path -> path
+                            .withStart("Start")
+                            .withFlow(new TaskNodeBuilder(reviewTaskName)
+                                        .withId("task:review")
+                                        .withDescription(reviewTaskDesc))
+                            .withFlow("task:approve")
+                    )
+                    .inRole(new RoleBuilder(roleName2), path -> path
+                            .withNode(new TaskNodeBuilder(approveTaskName)
+                                    .withId("task:approve")
+                                    .withDescription(approveTaskDesc))
+                            .withFlow("task:transfer")
+                    )
+                    .inRole(new RoleBuilder(roleName3), path -> path
+                            .withNode(new TaskNodeBuilder(transferTaskName)
+                                    .withId("task:transfer")
+                                    .withDescription(transferTaskDesc))
+                    )
                 .build();
 
         assertThat(processDiagram).isNotNull();
-        assertThat(processDiagram.getNodes()).hasSize(3);
+        assertThat(processDiagram.getNodes()).hasSize(4);
 
         Collection<Pool> pools = processDiagram.getPools();
         assertThat(pools).as("Should be exactly one Pool").hasSize(1);
@@ -183,6 +192,9 @@ public class BuilderTests {
                 getLaneByRoleName(processDiagram, roleName2));
         assertNodeCorrect(processDiagram, TaskNode.class, transferTaskName, transferTaskDesc,
                 getLaneByRoleName(processDiagram, roleName3));
+
+        assertHasFlow(processDiagram, "task:review", "task:approve");
+        assertHasFlow(processDiagram, "task:approve", "task:transfer");
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -205,6 +217,17 @@ public class BuilderTests {
                                    String name, String desc, Lane lane) {
         Optional<Node> nodeOptional = diagram.getNodes().stream().filter(n -> name.equals(n.getName())).findFirst();
         assertNodeCorrect(nodeOptional.orElseThrow(() -> new AssertionError(String.format("Cannot find node with name '%s' in diagram", name))), type, name, desc, lane);
+    }
+
+    private void assertHasFlow(Diagram diagram, String sourceId, String targetId) {
+        Optional<SequenceFlow> sf = diagram.getFlows()
+                .stream()
+                .filter(sequenceFlow -> sequenceFlow.getSource().getId().equals(sourceId) &&
+                                        sequenceFlow.getTarget().getId().equals(targetId))
+                .findFirst();
+        assertThat(sf.isPresent())
+                .as(String.format("Diagram '%s' does not contain sequence flow from node '%s' to node '%s'",
+                        diagram, sourceId, targetId));
     }
 
     private Lane getLaneByRoleName(ProcessDiagram diagram, String roleName) {

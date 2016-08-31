@@ -33,6 +33,15 @@ public class LaneReference {
     }
 
     /**
+     * Creates a reference to existing (already built) lane.
+     * @param lane The lane to reference
+     * @return The lane reference
+     */
+    public static LaneReference ofExisting(Lane lane) {
+        return new LaneReference(context -> lane);
+    }
+
+    /**
      * Returns the lane that is referenced.
      * @param ctx The builder context
      * @return The lane

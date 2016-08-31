@@ -32,25 +32,38 @@ public abstract class BaseNodeBuilder<T extends Node, B extends BaseNodeBuilder<
     @Required private LaneReference laneReference;
     private String description;
 
+    /**
+     * Sets the name of the node.
+     * @param name The name to set
+     * @return The node builder
+     */
     public B withName(String name) {
         this.name = name;
         return self();
     }
 
+    /**
+     * Sets the description of the node.
+     * @param description The description to set
+     * @return The node builder
+     */
     public B withDescription(String description) {
         this.description = description;
         return self();
     }
 
+    /** {@inheritDoc} */
     @Override public B onLane(Lane lane) {
-        return onLane(new LaneReference(context -> lane));
+        return onLane(LaneReference.ofExisting(lane));
     }
 
+    /** {@inheritDoc} */
     @Override public B onLane(ContextualBuilder<Lane> laneBuilder) {
         return onLane(new LaneReference(context -> context.getBuiltObject(laneBuilder)
                 .orElseThrow(() -> new IllegalStateException("Unable to find lane from builder"))));
     }
 
+    /** {@inheritDoc} */
     @Override public B onLane(LaneReference laneRef) {
         this.laneReference = laneRef;
         return self();

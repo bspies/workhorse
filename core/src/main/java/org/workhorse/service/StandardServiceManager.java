@@ -20,7 +20,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import org.workhorse.util.Attribute;
-import org.workhorse.util.NonUniqueResultException;
+import org.workhorse.util.UniqueResultViolation;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,7 +54,7 @@ public class StandardServiceManager implements ServiceManager {
                     .filter(sr -> doServiceAttributesMatch(sr, attributes))
                     .collect(Collectors.toList());
         if(matchingRefs.size()>1) {
-            throw new NonUniqueResultException(String.format("Unable to find unique service from query attributes: %s",
+            throw new UniqueResultViolation(String.format("Unable to find unique service from query attributes: %s",
                     Joiner.on(',').join(attributes)));
         }
         return matchingRefs.isEmpty() ? Optional.empty() :

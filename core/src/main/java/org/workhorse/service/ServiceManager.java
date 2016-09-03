@@ -16,7 +16,7 @@
 package org.workhorse.service;
 
 import org.workhorse.util.Attribute;
-import org.workhorse.util.NonUniqueResultException;
+import org.workhorse.util.UniqueResultViolation;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -37,7 +37,7 @@ public interface ServiceManager {
      * @param serviceType The registered service type
      * @param attributes The service attributes to match
      * @return The optional service instance
-     * @throws NonUniqueResultException If attributes match more than one service
+     * @throws UniqueResultViolation If attributes match more than one service
      */
     <S> Optional<S> getService(Class<S> serviceType, Attribute<?>... attributes);
 

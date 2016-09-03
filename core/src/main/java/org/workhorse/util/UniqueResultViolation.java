@@ -21,12 +21,12 @@ package org.workhorse.util;
  *
  * @author Brennan Spies
  */
-public class NonUniqueResultException extends RuntimeException {
+public class UniqueResultViolation extends RuntimeException {
     /**
      * Creates exception with a message.
      * @param message The exception message
      */
-    public NonUniqueResultException(String message) {
+    public UniqueResultViolation(String message) {
         super(message);
     }
 }

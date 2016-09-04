@@ -24,6 +24,7 @@ import org.workhorse.graph.builder.actor.DepartmentBuilder;
 import org.workhorse.graph.builder.actor.RoleBuilder;
 import org.workhorse.graph.builder.actor.UserBuilder;
 import org.workhorse.graph.builder.container.ProcessDiagramBuilder;
+import org.workhorse.graph.builder.node.EndNodeBuilder;
 import org.workhorse.graph.builder.node.TaskNodeBuilder;
 import org.workhorse.graph.exec.TaskNode;
 import org.workhorse.test.util.TestIdGenerator;
@@ -130,6 +131,79 @@ public class BuilderTests {
         Lane onlyLane = onlyPool.getLanes().iterator().next();
         assertThat(onlyLane.getRole()).isNotNull();
         assertThat(onlyLane.getRole().getName()).isEqualTo(roleName);
+    }
+
+    @Test
+    public void testDiagramWithSingleUserRoleAndForkJoin() {
+
+        String roleName = "Tester",
+               firstName = "Testy",
+               lastName = "McFadden",
+
+               taskNamePrep = "Prepare Tests",
+               taskDescPrep = "Prepare to run multiple tests in parallel",
+
+               taskNameA1 = "Run Test A",
+               taskDescA1 = "Run Test A in parallel",
+               taskNameA2 = "Collect Test A results",
+               taskDescA2 = "Collect the test results from run A",
+
+               taskNameB1 = "Run Test B",
+               taskDescB1 = "Run Test B in parallel",
+               taskNameB2 = "Collect Test B results",
+               taskDescB2 = "Collect the test results from run B",
+
+               taskNameJoin = "Start Analysis",
+               taskDescJoin = "Start analysis of test runs after completion";
+
+        ProcessDiagram processDiagram = new ProcessDiagramBuilder(new TestIdGenerator())
+                .withProcessName("Workflow for parallel test runs")
+                .withVersion(Version.getDefault())
+                .withParticipant(new UserBuilder().withName(firstName, lastName))
+                .inRole(new RoleBuilder(roleName), path ->
+                        path.withStart("Start")
+                                .withFlow(new TaskNodeBuilder(taskNamePrep)
+                                        .withId("task:prep")
+                                        .withDescription(taskDescPrep))
+                                //run test A and B in parallel
+                                .withForkAndJoin(new TaskNodeBuilder(taskNameJoin)
+                                                .withId("task:analyze")
+                                                .withDescription(taskDescJoin),
+                                        f1path -> f1path.withNode(new TaskNodeBuilder(taskNameA1)
+                                                        .withId("task:runA")
+                                                        .withDescription(taskDescA1))
+                                                    .withFlow(new TaskNodeBuilder(taskNameA2)
+                                                        .withId("task:collectA")
+                                                        .withDescription(taskDescA2)),
+                                        f2path -> f2path.withNode(new TaskNodeBuilder(taskNameB1)
+                                                        .withId("task:runB")
+                                                        .withDescription(taskDescB1))
+                                                    .withFlow(new TaskNodeBuilder(taskNameB2)
+                                                        .withId("task:collectB")
+                                                        .withDescription(taskDescB2)))
+                                .withFlow(new EndNodeBuilder("Complete"))
+                )
+                .build();
+
+        assertNodeCorrect(processDiagram, TaskNode.class, taskNamePrep, taskDescPrep,
+                getLaneByRoleName(processDiagram, roleName));
+        assertNodeCorrect(processDiagram, TaskNode.class, taskNameA1, taskDescA1,
+                getLaneByRoleName(processDiagram, roleName));
+        assertNodeCorrect(processDiagram, TaskNode.class, taskNameA2, taskDescA2,
+                getLaneByRoleName(processDiagram, roleName));
+        assertNodeCorrect(processDiagram, TaskNode.class, taskNameB1, taskDescB1,
+                getLaneByRoleName(processDiagram, roleName));
+        assertNodeCorrect(processDiagram, TaskNode.class, taskNameB2, taskDescB2,
+                getLaneByRoleName(processDiagram, roleName));
+        assertNodeCorrect(processDiagram, TaskNode.class, taskNameJoin, taskDescJoin,
+                getLaneByRoleName(processDiagram, roleName));
+
+        assertHasFlow(processDiagram, "task:prep", "task:runA");
+        assertHasFlow(processDiagram, "task:prep", "task:runB");
+        assertHasFlow(processDiagram, "task:runA", "task:collectA");
+        assertHasFlow(processDiagram, "task:runB", "task:collectB");
+        assertHasFlow(processDiagram, "task:collectA", "task:analyze");
+        assertHasFlow(processDiagram, "task:collectB", "task:analyze");
     }
 
     /**

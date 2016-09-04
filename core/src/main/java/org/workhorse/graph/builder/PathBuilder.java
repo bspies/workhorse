@@ -18,17 +18,15 @@ package org.workhorse.graph.builder;
 import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
 import org.workhorse.graph.builder.container.DiagramBuilder;
-import org.workhorse.graph.builder.node.EventNodeBuilder;
-import org.workhorse.graph.builder.node.StartNodeBuilder;
-import org.workhorse.graph.event.StartNode;
+import org.workhorse.util.MaybeType;
 
 /**
- * Builder for creating an execution path
- * associated with a given {@link Lane}.
+ * Builder for creating an execution path associated with a
+ * given {@link Lane}.
  *
  * @author Brennan Spies
  */
-public class PathBuilder {
+public abstract class PathBuilder {
 
     private DiagramBuilder parent;
     private LaneReference lane;
@@ -39,7 +37,7 @@ public class PathBuilder {
      * @param parent The parent builder
      * @param lane The swim lane
      */
-    public PathBuilder(DiagramBuilder parent, LaneReference lane) {
+    protected PathBuilder(DiagramBuilder parent, LaneReference lane) {
         this.parent = parent;
         this.lane = lane;
     }
@@ -50,8 +48,8 @@ public class PathBuilder {
      * @param parent The parent builder
      * @param laneBuilder The swim lane builder
      */
-    public PathBuilder(DiagramBuilder parent,
-                       ContextualBuilder<Lane> laneBuilder) {
+    protected PathBuilder(DiagramBuilder parent,
+                          ContextualBuilder<Lane> laneBuilder) {
         this.parent = parent;
         this.lane = new LaneReference(context ->
                 context.getBuiltObject(laneBuilder)
@@ -59,27 +57,25 @@ public class PathBuilder {
     }
 
     /**
-     * Creates a node with a start event.
-     * @param name The node name
-     * @return The builder for the event node
-     */
-    public FlowBuilder<StartNode> withStart(String name) {
-        StartNodeBuilder snb = new StartNodeBuilder(name);
-        snb.onLane(lane);
-        parent.addNode(snb);
-        return new FlowBuilder<>(parent, snb, lane);
-    }
-
-    /**
-     * Creates an implicit starting node.
+     * Creates the first node in the path.
      * @param startingNode The node builder
      * @return The builder
      */
     public <N extends Node> FlowBuilder<N> withNode(ContextualBuilder<N> startingNode) {
-        if(startingNode instanceof LaneElementBuilder) {
-            ((LaneElementBuilder)startingNode).onLane(lane);
-        }
+        setLaneIfAbsent(startingNode);
         parent.addNode(startingNode);
         return new FlowBuilder<>(parent, startingNode, lane);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    // Internal methods
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    protected <N extends Node> void setLaneIfAbsent(ContextualBuilder<N> nodeBuilder) {
+        MaybeType.of(LaneElementBuilder.class, nodeBuilder).ifInstanceOf(leb -> leb.onLane(lane));
+    }
+
+    protected LaneReference getLaneReference() { return lane; }
+
+    protected DiagramBuilder getParent() { return parent; }
 }

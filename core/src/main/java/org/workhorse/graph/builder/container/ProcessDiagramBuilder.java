@@ -23,11 +23,13 @@ import org.workhorse.id.IdGenerator;
 import org.workhorse.id.Identifiable;
 import org.workhorse.util.Builder;
 import org.workhorse.util.Version;
-import org.workhorse.util.VoidFunction;
 import org.workhorse.validation.Required;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Builder for {@link ProcessDiagram} instances.
@@ -208,7 +210,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @param pathFunction The path building function
          * @return The role execution builder
          */
-        public MultiOptionBuilder inRole(Role role, VoidFunction<PathBuilder> pathFunction) {
+        public MultiOptionBuilder inRole(Role role, Consumer<StartPathBuilder> pathFunction) {
             return inRole(ExistingObject.wrap(role), pathFunction);
         }
 
@@ -220,7 +222,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @return The intermediate builder
          */
         public MultiOptionBuilder inRole(ContextualBuilder<Role> roleBuilder,
-                                         VoidFunction<PathBuilder> pathFunction) {
+                                         Consumer<StartPathBuilder> pathFunction) {
             LaneBuilder laneBuilder = new LaneBuilder(roleBuilder);
             return inLane(laneBuilder, pathFunction);
         }
@@ -231,7 +233,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @param pathFunction The path building function
          * @return The intermediate builder
          */
-        public MultiOptionBuilder inLane(Lane lane, VoidFunction<PathBuilder> pathFunction) {
+        public MultiOptionBuilder inLane(Lane lane, Consumer<StartPathBuilder> pathFunction) {
             return inLane(ExistingObject.wrap(lane), pathFunction);
         }
 
@@ -242,11 +244,10 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @return The intermediate builder
          */
         public MultiOptionBuilder inLane(ContextualBuilder<Lane> laneBuilder,
-                                         VoidFunction<PathBuilder> pathFunction) {
+                                         Consumer<StartPathBuilder> pathFunction) {
             poolBuilder.withLane(laneBuilder);
-            PathBuilder pathBuilder = new PathBuilder(parent, laneBuilder);
-            pathFunction.apply(pathBuilder);
-            //parent.addPath(pathBuilder);
+            StartPathBuilder pathBuilder = new StartPathBuilder(parent, laneBuilder);
+            pathFunction.accept(pathBuilder);
             return new MultiOptionBuilder(parent, this);
         }
     }
@@ -299,7 +300,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @param pathFunction The path building function
          * @return The role execution builder
          */
-        public MultiOptionBuilder inRole(Role role, VoidFunction<PathBuilder> pathFunction) {
+        public MultiOptionBuilder inRole(Role role, Consumer<StartPathBuilder> pathFunction) {
             return participantBuilder.inRole(role, pathFunction);
         }
 
@@ -310,7 +311,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @return The role execution builder
          */
         public MultiOptionBuilder inRole(ContextualBuilder<Role> roleBuilder,
-                                         VoidFunction<PathBuilder> pathFunction) {
+                                         Consumer<StartPathBuilder> pathFunction) {
             return participantBuilder.inRole(roleBuilder, pathFunction);
         }
 
@@ -320,7 +321,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @param pathFunction The path building function
          * @return The intermediate builder
          */
-        public MultiOptionBuilder inLane(Lane lane, VoidFunction<PathBuilder> pathFunction) {
+        public MultiOptionBuilder inLane(Lane lane, Consumer<StartPathBuilder> pathFunction) {
             return participantBuilder.inLane(lane, pathFunction);
         }
 
@@ -331,7 +332,7 @@ public class ProcessDiagramBuilder extends BaseBuilder
          * @return The intermediate builder
          */
         public MultiOptionBuilder inLane(ContextualBuilder<Lane> laneBuilder,
-                                         VoidFunction<PathBuilder> pathFunction) {
+                                         Consumer<StartPathBuilder> pathFunction) {
             return participantBuilder.inLane(laneBuilder, pathFunction);
         }
     }

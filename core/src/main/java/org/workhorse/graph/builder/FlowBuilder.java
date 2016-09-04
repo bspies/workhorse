@@ -16,12 +16,12 @@
 package org.workhorse.graph.builder;
 
 import org.workhorse.expr.Condition;
-import org.workhorse.graph.Lane;
 import org.workhorse.graph.Node;
 import org.workhorse.graph.builder.container.DiagramBuilder;
 import org.workhorse.graph.builder.node.NodeReference;
+import org.workhorse.util.MaybeType;
 
-import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Intermediate builder to build the process flow.
@@ -43,8 +43,8 @@ public class FlowBuilder<T extends Node> {
     }
 
     /**
-     * Creates a sequence flow to a deferred (late-built) node.
-     * @param id The id of the node to reference
+     * Creates a sequence flow to a referenced node.
+     * @param id The id of the node
      * @return The current builder
      */
     public FlowBuilder<T> withFlow(String id) {
@@ -53,8 +53,8 @@ public class FlowBuilder<T extends Node> {
     }
 
     /**
-     * Creates a conditional sequence flow to a deferred (late-built) node.
-     * @param id The id of the node to reference
+     * Creates a conditional sequence flow to a referenced node.
+     * @param id The id of the node
      * @param condition The condition
      * @return The current builder
      */
@@ -66,14 +66,63 @@ public class FlowBuilder<T extends Node> {
     }
 
     /**
+     * Adds a group of divergent paths that merge on a given node.
+     * @param joinNode The buiider of the merge node
+     * @param paths The forked paths
+     * @return The flow builder (from the merge node)
+     */
+    @SafeVarargs
+    final public <N extends Node> FlowBuilder<N> withForkAndJoin(ContextualBuilder<N> joinNode,
+                                                                 Consumer<ForkPathBuilder>... paths) {
+        setLaneIfAbsent(joinNode);
+        parent.addNode(joinNode);
+        for(Consumer<ForkPathBuilder> cfp : paths) {
+            ForkPathBuilder pathBuilder = new ForkPathBuilder(parent, currentLane, currentNode);
+            cfp.accept(pathBuilder);
+        }
+        return new FlowBuilder<>(parent, joinNode, currentLane);
+    }
+
+    /**
+     * Creates a forked execution path from the current node, in the current
+     * lane.
+     * @param forkedPath The lambda function with path builder
+     * @return The current flow builder
+     */
+    public FlowBuilder<T> withFork(Consumer<ForkPathBuilder> forkedPath) {
+        return withFork(currentLane, forkedPath);
+    }
+
+    /**
+     * Creates a forked execution path from the current node in the given lane.
+     * @param lane The lane for the execution path
+     * @param forkedPath The lambda function with path builder
+     * @return The current flow builder
+     */
+    public FlowBuilder<T> withFork(LaneReference lane, Consumer<ForkPathBuilder> forkedPath) {
+        ForkPathBuilder pathBuilder = new ForkPathBuilder(parent, lane, currentNode);
+        forkedPath.accept(pathBuilder);
+        return this;
+    }
+
+    /**
+     * Merges (and ends) the flow to the referenced node.
+     * @param id The id of the node to merge to
+     */
+    public void mergeTo(String id) {
+        SequenceFlowBuilder flow = edge(currentNode, id);
+        parent.addFlow(flow);
+    }
+
+    /**
      * Creates a new node in the diagram as well as a sequence
      * flow to that node. Returns a flow builder with the newly created
      * node builder as its current reference.
      * @param nodeBuilder The node builder
-     * @return The new node builder
+     * @return The flow builder (from the new node)
      */
     public <N extends Node> FlowBuilder<N> withFlow(ContextualBuilder<N> nodeBuilder) {
-        setLaneOnNodeBuilder(nodeBuilder);
+        setLaneIfAbsent(nodeBuilder);
         parent.addNode(nodeBuilder);
         NodeReference<T> source = getNodeByBuilder(currentNode);
         NodeReference<N> target = getNodeByBuilder(nodeBuilder);
@@ -87,10 +136,10 @@ public class FlowBuilder<T extends Node> {
      * node builder as its current reference.
      * @param nodeBuilder The node builder
      * @param condition The flow condition
-     * @return The new node builder
+     * @return The flow builder (from the new node)
      */
     public <N extends Node> FlowBuilder<N> withFlow(ContextualBuilder<N> nodeBuilder, Condition condition) {
-        setLaneOnNodeBuilder(nodeBuilder);
+        setLaneIfAbsent(nodeBuilder);
         parent.addNode(nodeBuilder);
         NodeReference<T> source = getNodeByBuilder(currentNode);
         NodeReference<N> target = getNodeByBuilder(nodeBuilder);
@@ -102,10 +151,9 @@ public class FlowBuilder<T extends Node> {
     // Helper methods
     //////////////////////////////////////////////////////////////////////////////////
 
-    private void setLaneOnNodeBuilder(ContextualBuilder<? extends Node> nodeBuilder) {
-        if(nodeBuilder instanceof LaneElementBuilder) {
-            ((LaneElementBuilder)nodeBuilder).onLane(currentLane);
-        }
+    private void setLaneIfAbsent(ContextualBuilder<? extends Node> nodeBuilder) {
+        MaybeType.of(LaneElementBuilder.class, nodeBuilder)
+                .ifInstanceOf(leb -> leb.onLaneIfAbsent(currentLane));
     }
 
     /**

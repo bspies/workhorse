@@ -15,7 +15,6 @@
  */
 package org.workhorse.graph.builder.node;
 
-import org.workhorse.graph.builder.BuilderContext;
 import org.workhorse.graph.event.EventNode;
 
 /**
@@ -28,4 +27,6 @@ public abstract class EventNodeBuilder<E extends EventNode> extends BaseNodeBuil
     public EventNodeBuilder(String name) {
         withName(name);
     }
+
+    protected EventNodeBuilder() {}
 }

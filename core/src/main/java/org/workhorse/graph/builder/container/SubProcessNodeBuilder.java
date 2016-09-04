@@ -22,9 +22,11 @@ import org.workhorse.graph.SequenceFlow;
 import org.workhorse.graph.builder.BuilderContext;
 import org.workhorse.graph.builder.ContextualBuilder;
 import org.workhorse.graph.builder.PathBuilder;
+import org.workhorse.graph.builder.StartPathBuilder;
 import org.workhorse.graph.builder.node.ActivityNodeBuilder;
 import org.workhorse.graph.exec.SubProcessNode;
-import org.workhorse.util.VoidFunction;
+
+import java.util.function.Consumer;
 
 /**
  * Builder for {@link SubProcessNode} instances.
@@ -36,6 +38,10 @@ public class SubProcessNodeBuilder extends ActivityNodeBuilder<SubProcessNode,Su
 
     private BuilderState builderState = new BuilderState();
 
+    /**
+     * Creates the sub-process node builder with the name.
+     * @param name The name of the sub-process
+     */
     public SubProcessNodeBuilder(String name) {
         withName(name);
     }
@@ -45,21 +51,24 @@ public class SubProcessNodeBuilder extends ActivityNodeBuilder<SubProcessNode,Su
      * @param pathFunction The path function
      * @return The current builder
      */
-    public SubProcessNodeBuilder withPath(VoidFunction<PathBuilder> pathFunction) {
-        pathFunction.apply(new PathBuilder(this, getLaneReference()));
+    public SubProcessNodeBuilder withPath(Consumer<PathBuilder> pathFunction) {
+        pathFunction.accept(new StartPathBuilder(this, getLaneReference()));
         return this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void addFlow(ContextualBuilder<SequenceFlow> flowBuilder) {
         builderState.addFlow(flowBuilder);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void addNode(ContextualBuilder<? extends Node> nodeBuilder) {
         builderState.addNode(nodeBuilder);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void addPool(ContextualBuilder<Pool> poolBuilder) {
         builderState.addPool(poolBuilder);
@@ -76,9 +85,9 @@ public class SubProcessNodeBuilder extends ActivityNodeBuilder<SubProcessNode,Su
         ctx.setParent(subProcessNode);
         builderState.getNodes().forEach(nodeBuilder -> subProcessNode.addNode(ctx.build(nodeBuilder)));
         builderState.getFlows().forEach(flowBuilder -> subProcessNode.addFlow(ctx.build(flowBuilder)));
+        addParameters(subProcessNode);
         //reset parent
         ctx.setParent(parent);
-        addParameters(subProcessNode);
         return subProcessNode;
     }
 

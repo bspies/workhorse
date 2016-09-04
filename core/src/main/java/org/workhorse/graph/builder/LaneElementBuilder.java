@@ -24,19 +24,6 @@ import org.workhorse.graph.Lane;
  * @author Brennan Spies
  */
 public interface LaneElementBuilder<B> {
-    /**
-     * Sets the lane for this builder.
-     * @param lane The lane
-     * @return The builder
-     */
-    B onLane(Lane lane);
-
-    /**
-     * Sets the lane for this builder.
-     * @param laneBuilder The lane builder
-     * @return The builder
-     */
-    B onLane(ContextualBuilder<Lane> laneBuilder);
 
     /**
      * Sets the lane for this builder.
@@ -44,4 +31,12 @@ public interface LaneElementBuilder<B> {
      * @return The builder
      */
     B onLane(LaneReference laneRef);
+
+    /**
+     * Sets the lane for this builder only if
+     * no lane has already been set.
+     * @param laneRef The lane reference
+     * @return The builder
+     */
+    B onLaneIfAbsent(LaneReference laneRef);
 }

@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.util;
+package org.workhorse.graph.event;
+
+import org.workhorse.graph.BaseNode;
+import org.workhorse.graph.Diagram;
+import org.workhorse.graph.Lane;
 
 /**
- * A variation of {@link java.util.function.Function}
- * with no return type.
+ * A terminating node.
  *
  * @author Brennan Spies
  */
-@FunctionalInterface
-public interface VoidFunction<T> {
+public class EndNode extends BaseNode implements EventNode {
     /**
-     * Applies the function.
-     * @param t The parameter
+     * Constructor takes parent diagram and lane to which the node
+     * belongs.
+     * @param id      The node id
+     * @param diagram The parent diagram
+     * @param lane    The lane
      */
-    void apply(T t);
+    public EndNode(String id, Diagram diagram, Lane lane) {
+        super(id, diagram, lane);
+    }
 }

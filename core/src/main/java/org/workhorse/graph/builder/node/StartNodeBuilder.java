@@ -1,7 +1,6 @@
 package org.workhorse.graph.builder.node;
 
 import org.workhorse.graph.builder.BuilderContext;
-import org.workhorse.graph.event.EventNode;
 import org.workhorse.graph.event.StartNode;
 
 /**
@@ -11,9 +10,16 @@ import org.workhorse.graph.event.StartNode;
  */
 public class StartNodeBuilder extends EventNodeBuilder<StartNode> {
 
+    /**
+     * Creates a start node builder with a name.
+     * @param name The node name
+     */
     public StartNodeBuilder(String name) {
         super(name);
     }
+
+    /** Default constructor */
+    public StartNodeBuilder() {}
 
     @Override
     public Class<StartNode> getBuiltType() {
@@ -21,7 +27,7 @@ public class StartNodeBuilder extends EventNodeBuilder<StartNode> {
     }
 
     @Override public StartNode build(BuilderContext ctx) {
-        setIdIfAbsent(() -> ctx.generateIdFor(EventNode.class));
+        setIdIfAbsent(() -> ctx.generateIdFor(StartNode.class));
         runValidation();
         return new StartNode(getId(), ctx.getParent(), getLane(ctx));
     }

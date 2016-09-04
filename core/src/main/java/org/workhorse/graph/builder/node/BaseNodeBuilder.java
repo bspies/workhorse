@@ -53,19 +53,16 @@ public abstract class BaseNodeBuilder<T extends Node, B extends BaseNodeBuilder<
     }
 
     /** {@inheritDoc} */
-    @Override public B onLane(Lane lane) {
-        return onLane(LaneReference.ofExisting(lane));
-    }
-
-    /** {@inheritDoc} */
-    @Override public B onLane(ContextualBuilder<Lane> laneBuilder) {
-        return onLane(new LaneReference(context -> context.getBuiltObject(laneBuilder)
-                .orElseThrow(() -> new IllegalStateException("Unable to find lane from builder"))));
-    }
-
-    /** {@inheritDoc} */
     @Override public B onLane(LaneReference laneRef) {
         this.laneReference = laneRef;
+        return self();
+    }
+
+    /** {@inheritDoc} */
+    @Override public B onLaneIfAbsent(LaneReference laneRef) {
+        if(this.laneReference == null) {
+            this.laneReference = laneRef;
+        }
         return self();
     }
 

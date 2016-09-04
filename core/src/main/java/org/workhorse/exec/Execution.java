@@ -25,7 +25,10 @@ import org.workhorse.process.Process;
 import java.util.UUID;
 
 /**
- * Represents a given "thread of execution" in a workflow.
+ * Represents a given thread of execution in a workflow. Can also
+ * be thought of as a "token" in petri net or BPMN execution model
+ * (see 13.2.1 of the <a href="http://www.omg.org/spec/BPMN/2.0/">BPMN 2.0</a>
+ * specification).
  *
  * @author Brennan Spies
  */

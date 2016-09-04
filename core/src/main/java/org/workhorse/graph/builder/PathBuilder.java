@@ -72,7 +72,7 @@ public abstract class PathBuilder {
     /////////////////////////////////////////////////////////////////////////////////////
 
     protected <N extends Node> void setLaneIfAbsent(ContextualBuilder<N> nodeBuilder) {
-        MaybeType.of(LaneElementBuilder.class, nodeBuilder).ifInstanceOf(leb -> leb.onLane(lane));
+        MaybeType.of(LaneElementBuilder.class, nodeBuilder).ifInstanceOf(leb -> leb.onLaneIfAbsent(lane));
     }
 
     protected LaneReference getLaneReference() { return lane; }

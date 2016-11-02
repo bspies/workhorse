@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.dependency;
+package org.workhorse.dependency.guice;
 
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import org.workhorse.dependency.DependencyManager;
 
 /**
  * Implementation of the {@link DependencyManager} service using the Google Guice

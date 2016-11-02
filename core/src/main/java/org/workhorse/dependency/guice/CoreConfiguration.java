@@ -44,7 +44,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Configuration of core workflow functionality for the
- * {@link org.workhorse.dependency.GuiceDependencyManager}.
+ * {@link GuiceDependencyManager}.
  */
 public class CoreConfiguration extends AbstractModule {
 

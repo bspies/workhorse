@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.workhorse.dependency;
+package org.workhorse.dependency.spring;
+
+import org.workhorse.dependency.DependencyManager;
 
 /**
  * Implementation of the {@link DependencyManager} service using the Spring framework.

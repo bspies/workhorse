@@ -22,11 +22,9 @@ import org.workhorse.script.ScriptRunner;
 import org.workhorse.service.ServiceManager;
 import org.workhorse.service.StandardServiceManager;
 
-import javax.script.ScriptEngine;
-
 /**
  * Configuration of core service functionality for the
- * {@link org.workhorse.dependency.GuiceDependencyManager}.
+ * {@link GuiceDependencyManager}.
  */
 public class ServiceConfiguration extends AbstractModule {
 

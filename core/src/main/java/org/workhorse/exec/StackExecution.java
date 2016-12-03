@@ -42,7 +42,6 @@ public class StackExecution extends ProcessElement implements Execution {
 
     /**
      * Creates a new {@code StackExecution}.
-     *
      * @param id The execution id
      * @param process The parent process
      */

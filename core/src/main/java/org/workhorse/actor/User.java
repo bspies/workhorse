@@ -42,6 +42,7 @@ public class User implements Actor
         this.name = name;
 	}
 
+	/** {@inheritDoc} */
     @Override public String getId() {
         return id;
     }
@@ -67,7 +68,7 @@ public class User implements Actor
         return name.getDisplay(Locale.getDefault()); //todo make Locale
     }
 	
-	/**
+	/*
 	 * Retrieves a collection of active tasks to which
 	 * this user has been assigned.
 	 * @return The task list

@@ -23,10 +23,19 @@ import org.workhorse.graph.event.CatchingNode;
  *
  * @author  Brennan Spies
  */
-public class MessageFlow<M> 
+public class MessageFlow<M> implements Connector<Node,Node>
 {
 	private CatchingNode<Message<M>> target;
-	
+	private Node source;
+
+	/**
+	 * Returns the source of the message.
+	 * @return The source
+	 */
+	@Override public Node getSource() {
+		return null;
+	}
+
 	/**
 	 * Returns the receiver that is the target of the message flow.
 	 * @return  The message receiver

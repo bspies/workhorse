@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  *
  * @author Brennan Spies
  */
-public class StandardServiceManager implements ServiceManager {
+public class WorkflowServiceManager implements ServiceManager {
 
     private ImmutableMultimap<Class<?>,QualifiedService<?>> services;
 
@@ -38,7 +38,7 @@ public class StandardServiceManager implements ServiceManager {
      * Default constructor, takes all of the services to be registered.
      * @param services The registered services
      */
-    private StandardServiceManager(Multimap<Class<?>,QualifiedService<?>> services) {
+    private WorkflowServiceManager(Multimap<Class<?>, QualifiedService<?>> services) {
         this.services = ImmutableMultimap
                 .<Class<?>,QualifiedService<?>>builder()
                 .putAll(services)
@@ -115,7 +115,7 @@ public class StandardServiceManager implements ServiceManager {
 
         /** Builds service manager */
         @Override public ServiceManager build() {
-            return new StandardServiceManager(services);
+            return new WorkflowServiceManager(services);
         }
     }
 

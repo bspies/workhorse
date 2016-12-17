@@ -28,7 +28,7 @@ import org.workhorse.exec.Execution;
 public class Receiver implements Catcher<Signal>
 {
 	private static final EventType<Signal> type =
-			new EventType<>(new TypeLiteral<Signal>() {});
+			new EventType<>(Signal.class);
 	
 	/**
 	 * {@inheritDoc}

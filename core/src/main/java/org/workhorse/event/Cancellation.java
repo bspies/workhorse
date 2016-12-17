@@ -24,7 +24,7 @@ import com.google.inject.TypeLiteral;
 public class Cancellation extends BaseEvent implements ThrownEvent<Cancellation>
 {
 	public static final EventType<Cancellation> type =
-			new EventType<>(new TypeLiteral<Cancellation>() {});
+			new EventType<>(Cancellation.class);
 	private String reason;
 	
 	/**

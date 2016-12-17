@@ -23,7 +23,7 @@ import com.google.inject.TypeLiteral;
  *
  * @author Brennan Spies
  */
-public class EventType<E extends ThrownEvent<E>> 
+public class EventType<E extends Event>
 {
 	private TypeLiteral<E> type;
 	
@@ -34,6 +34,14 @@ public class EventType<E extends ThrownEvent<E>>
 	 * @param type The type literal
 	 */
 	public EventType(TypeLiteral<E> type) {this.type = type;}
+
+	/**
+	 * Constructor for simple event types, i.e., where there
+	 * is a one-to-one correspondence between the class of
+	 * the {@link Event} and the {@code EventType}.
+	 * @param eventClass The class of the event
+	 */
+	public EventType(Class<E> eventClass) { this(TypeLiteral.get(eventClass)); }
 
 	/**
 	 * @see java.lang.Object#hashCode()

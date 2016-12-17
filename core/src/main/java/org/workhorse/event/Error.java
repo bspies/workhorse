@@ -26,7 +26,7 @@ import org.workhorse.graph.Node;
 public class Error extends BaseEvent implements ThrownEvent<Error>
 {
 	public static final EventType<Error> type =
-			new EventType<>(new TypeLiteral<Error>() {});
+			new EventType<>(Error.class);
 
 	private final String name;
 	private String message;

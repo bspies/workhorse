@@ -24,7 +24,7 @@ import java.util.Locale;
  */
 public class WesternName implements Name {
 
-    String firstName, middleName, lastName;
+    private String firstName, middleName, lastName;
 
     /**
      * Creates a name with first (given) and last (family) names.

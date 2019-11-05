@@ -11,8 +11,6 @@
 
     <modules>
         <module>core</module>
-        <module>dotbpm</module>
-        <module>common</module>
     </modules>
 
     <build>

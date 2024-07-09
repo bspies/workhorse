@@ -34,7 +34,8 @@ import java.util.*;
  */
 public abstract class ActivityNode<T extends Activity> extends BaseNode {
 
-    private Map<String,Parameter<?>> inputSet, outputSet;
+    private final Map<String,Parameter<?>> inputSet;
+    private final Map<String,Parameter<?>> outputSet;
     private CatcherMap catchers;
 
     /**

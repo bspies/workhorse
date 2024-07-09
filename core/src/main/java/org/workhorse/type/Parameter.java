@@ -15,14 +15,12 @@
  */
 package org.workhorse.type;
 
-import org.workhorse.exec.Execution;
 import org.workhorse.exec.ctx.Context;
 import org.workhorse.expr.Expression;
 import org.workhorse.type.constraint.Constraint;
 import org.workhorse.type.constraint.ConstraintViolation;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * Represents an input or output parameter.
@@ -31,9 +29,9 @@ import java.util.function.Supplier;
  */
 public class Parameter<V> {
 
-    private Expression<V> expression;
+    private final Expression<V> expression;
     private Constraint<V> constraint;
-    private String name;
+    private final String name;
 
     /**
      * Creates a parameter with a name and expression.
